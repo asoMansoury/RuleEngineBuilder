@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 1,
+    "FieldType": "String",
+    "FieldTypeCode": "ST",
+    "AssemblyName": "System.String"
+  },
+  {
+    "Id": 2,
+    "FieldType": "Int32",
+    "FieldTypeCode": "Int32",
+    "AssemblyName": "System.Int32"
+  },
+  {
+    "Id": 3,
+    "FieldType": "Int64",
+    "FieldTypeCode": "Int64",
+    "AssemblyName": "System.Int64"
+  }
+]

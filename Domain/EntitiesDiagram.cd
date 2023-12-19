@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RuleBuilderInfra.Domain.Entities.ConditionEntity">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ConditionEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RuleBuilderInfra.Domain.Entities.ConditionRuleEntity">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAEAAAAAAAAAAAAAAQAAAAAgAgAABAIAA=</HashCode>
+      <FileName>Entities\ConditionRuleEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RuleBuilderInfra.Domain.Entities.FakeDataEntity">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAEAAAAAACAAAAAAAAAAgAAAAAAgAAAAA=</HashCode>
+      <FileName>Entities\FakeDataEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RuleBuilderInfra.Domain.Entities.FieldOperatorJoiningEntity">
+    <Position X="7.25" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAgQAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Entities\FieldOperatorJoiningEntity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FieldTypesEntity" />
+      <Property Name="OperatorTypesEntity" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="RuleBuilderInfra.Domain.Entities.FieldTypesEntity">
+    <Position X="11.25" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAACAACAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Entities\FieldTypesEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RuleBuilderInfra.Domain.Entities.OperatorTypesEntity">
+    <Position X="3.25" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAQAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\OperatorTypesEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

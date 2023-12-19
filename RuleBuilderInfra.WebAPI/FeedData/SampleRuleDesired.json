@@ -1,0 +1,99 @@
+{
+  "Id": 1,
+  "RuleName": "T1",
+  "Description": "its for tax",
+  "AssemblyName": "build.ss.TaxCalculator",
+  "Value": "40",
+  "Typeof": "Int32",
+  "Operator": "Eq",
+  "Conditions": [
+    {
+      "Id": 1,
+      "PropertyName": "Distributer",
+      "Operator": "Eq",
+      "Value": "Paramond",
+      "FieldTypeCode": "ST",
+      "ConditionCode": "AND",
+      "Conditions": [
+
+        {
+          "Id": 3,
+          "PropertyName": "Province",
+          "Operator": "Cte",
+          "ParentId": 1,
+          "FieldTypeCode": "ST",
+          "ConditionCode": "OR",
+          "Value": "On"
+        },
+        {
+          "Id": 4,
+          "PropertyName": "Province",
+          "Operator": "Eq",
+          "ParentId": 1,
+          "FieldTypeCode": "ST",
+          "ConditionCode": "AND",
+          "Value": "Ontario",
+          "Conditions": [
+            {
+              "Id": 2,
+              "ParentId": 4,
+              "PropertyName": "Movie",
+              "Operator": "Cte",
+              "FieldTypeCode": "ST",
+              "Value": "pid",
+              "ConditionCode": "AND"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": 5,
+      "PropertyName": "Province",
+      "Operator": "Stw",
+      "Value": "Q",
+      "FieldTypeCode": "ST",
+      "ConditionCode": "AND",
+      "Conditions": [
+        {
+          "Id": 6,
+          "ParentId": 5,
+          "PropertyName": "Movie",
+          "Operator": "Stw",
+          "FieldTypeCode": "ST",
+          "Value": "Sin",
+          "ConditionCode": "AND",
+          "Conditions": [
+            {
+              "Id": 8,
+              "ParentId": 6,
+              "PropertyName": "Movie",
+              "Operator": "Cte",
+              "FieldTypeCode": "ST",
+              "Value": "lla",
+              "ConditionCode": "OR"
+            },
+            {
+              "Id": 8,
+              "ParentId": 6,
+              "PropertyName": "Movie",
+              "Operator": "Cte",
+              "FieldTypeCode": "ST",
+              "Value": "Sin",
+              "ConditionCode": "AND"
+            }
+          ]
+        },
+        {
+          "Id": 7,
+          "ParentId": 5,
+          "PropertyName": "Distributer",
+          "Operator": "Stw",
+          "FieldTypeCode": "ST",
+          "ConditionCode": "AND",
+          "Value": "D"
+        }
+      ]
+    }
+  ]
+}

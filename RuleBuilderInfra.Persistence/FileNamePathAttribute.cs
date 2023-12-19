@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RuleBuilderInfra.Persistence
+{
+    public class FileNamePathAttribute : Attribute
+    {
+        public string FileName { get; private set; }
+        public FileNamePathAttribute(string fileName)
+        {
+            this.FileName = fileName;
+        }
+    }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "OperatorTypeCode": "Eq",
+    "FieldTypeCode": "Int32"
+  },
+  {
+    "OperatorTypeCode": "NEq",
+    "FieldTypeCode": "Int32"
+  },
+  {
+    "OperatorTypeCode": "Gt",
+    "FieldTypeCode": "Int32"
+  },
+  {
+    "OperatorTypeCode": "Gte",
+    "FieldTypeCode": "Int32"
+  },
+  {
+    "OperatorTypeCode": "Lt",
+    "FieldTypeCode": "Int32"
+  },
+  {
+    "OperatorTypeCode": "Lte",
+    "FieldTypeCode": "Int32"
+  },
+  {
+    "OperatorTypeCode": "Eq",
+    "FieldTypeCode": "ST"
+  },
+  {
+    "OperatorTypeCode": "NEq",
+    "FieldTypeCode": "ST"
+  },
+  {
+    "OperatorTypeCode": "Stw",
+    "FieldTypeCode": "ST"
+  },
+  {
+    "OperatorTypeCode": "Cte",
+    "FieldTypeCode": "ST"
+  }
+]

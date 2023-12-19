@@ -1,0 +1,6 @@
+@RuleBuilderInfra.WebAPI_HostAddress = http://localhost:5173
+
+GET {{RuleBuilderInfra.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

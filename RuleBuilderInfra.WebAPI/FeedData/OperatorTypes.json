@@ -1,0 +1,34 @@
+[
+  {
+    "Name": "Equal",
+    "OperatorTypeCode": "Eq"
+  },
+  {
+    "Name": "NotEqual",
+    "OperatorTypeCode": "NEq"
+  },
+  {
+    "Name": "GreaterThan",
+    "OperatorTypeCode": "Gt"
+  },
+  {
+    "Name": "GreaterThanOrEqual",
+    "OperatorTypeCode": "Gte"
+  },
+  {
+    "Name": "LessThan",
+    "OperatorTypeCode": "Lt"
+  },
+  {
+    "Name": "LessThanOrEqual",
+    "OperatorTypeCode": "Lte"
+  },
+  {
+    "Name": "StartsWith",
+    "OperatorTypeCode": "Stw"
+  },
+  {
+    "Name": "Contains",
+    "OperatorTypeCode": "Cte"
+  }
+]
