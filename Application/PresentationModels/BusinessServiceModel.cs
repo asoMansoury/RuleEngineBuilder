@@ -14,5 +14,11 @@ namespace RuleBuilderInfra.Application.PresentationModels
         public string ServiceAssembly { get; set; }
         public string ServiceName { get; set; }
         public string CategoryService { get; set; }
+        public List<BuisinessServicePropertis> InputParams { get; set; }
+    }
+    public class BuisinessServicePropertis
+    {
+        public string PropertyName { get; set; }
+        public string PropertyType { get; set; }
     }
 }

@@ -37,5 +37,11 @@ namespace RuleBuilderInfra.WebAPI.Controllers
         {
             return Ok(_assemblyManagerService.GetBusinessServices());
         }
+
+        [HttpGet(nameof(GetServiceInputProperties))]
+        public async Task<IActionResult> GetServiceInputProperties([FromQuery] string CategoryService, [FromQuery] string ServiceName, CancellationToken cancellationToken)
+        {
+            return Ok(_assemblyManagerService.GetServiceInputProperties(CategoryService, ServiceName, cancellationToken));
+        }
     }
 }

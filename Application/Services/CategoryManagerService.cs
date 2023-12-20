@@ -63,6 +63,7 @@ namespace RuleBuilderInfra.Application.Services
             });
 
         }
+
         public object GetSelectedServiceType(string categoryService, string serviceName)
         {
             if(!_businessServicesStore.Any(item => item.ServiceName == serviceName && item.CategoryService == categoryService))
@@ -81,7 +82,10 @@ namespace RuleBuilderInfra.Application.Services
         {
             if (_businessServicesStore == null || _businessServicesStore.Count == 0)
                 throw new ArgumentNullException();
-
+            foreach (var item in _businessServicesStore)
+            {
+                item.InputParams = GetInputParamsForMethods(item.CategoryService, item.ServiceName);
+            }
             return _businessServicesStore;
         }
 
@@ -143,6 +147,28 @@ namespace RuleBuilderInfra.Application.Services
             Type returnType = performAsyncLogicMethod.ReturnType;
             Type inputBusinessType = performAsyncLogicMethod.GetParameters()[1].ParameterType;
             return inputBusinessType;
+        }
+
+        public List<BuisinessServicePropertis> GetServiceInputProperties(string CategoryService, string ServiceName, CancellationToken cancellationToken)
+        {
+            return GetInputParamsForMethods(CategoryService, ServiceName);
+        }
+        private List<BuisinessServicePropertis> GetInputParamsForMethods(string CategoryService, string ServiceName)
+        {
+            var types = new List<BuisinessServicePropertis>();
+            var serviceBusinessType = GetInuptBusiness(CategoryService, ServiceName);
+            var properties = serviceBusinessType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            // Print properties and their types
+            foreach (var property in properties)
+            {
+                Console.WriteLine($"Property: {property.Name}, Type: {property.PropertyType}");
+                types.Add(new BuisinessServicePropertis
+                {
+                    PropertyName = property.Name,
+                    PropertyType = property.PropertyType.Name
+                });
+            }
+            return types;
         }
     }
 }

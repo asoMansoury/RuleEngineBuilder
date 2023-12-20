@@ -18,8 +18,9 @@ namespace RuleBuilderInfra.Domain.Entities
 
         public String RuleName { get; set; }
 
+
         [NotMapped]
-        public object Value
+        public object? Value
         {
             get
             {
@@ -43,7 +44,7 @@ namespace RuleBuilderInfra.Domain.Entities
 
         [JsonIgnore]
         [Column("JsonValue")]
-        public String JsonValue { get; set; }
+        public String? JsonValue { get; set; }
 
         public String CategoryService { get; set; }
         public String ServiceName { get; set; }

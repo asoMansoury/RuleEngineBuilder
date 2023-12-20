@@ -46,18 +46,26 @@ namespace RuleBuilderInfra.Application.Services
 
         public async Task<object> InvokeAsync(int ruleEntityId, params object[] objects) 
         {
-            var ruleEntity = await _ruleManagerService.GetRuleEntityByIdAsync(ruleEntityId);
-            var outputSearchJson =await this._scanEntitiesEngineService.GenerateQueryBuilder(ruleEntity);
+            try
+            {
+                var ruleEntity = await _ruleManagerService.GetRuleEntityByIdAsync(ruleEntityId);
+                var outputSearchJson = await this._scanEntitiesEngineService.GenerateQueryBuilder(ruleEntity);
 
-            object foundServiceInstance = _assemblyManagerService.GetSelectedServiceType(ruleEntity.CategoryService, ruleEntity.ServiceName);
-            Type inputBusinessModel = _assemblyManagerService.GetInuptBusiness(ruleEntity.CategoryService, ruleEntity.ServiceName);
-            var inputModel = JsonConvert.DeserializeObject(ruleEntity.JsonValue, inputBusinessModel);
-            var businessEngine = Activator.CreateInstance(foundServiceInstance.GetType());
+                object foundServiceInstance = _assemblyManagerService.GetSelectedServiceType(ruleEntity.CategoryService, ruleEntity.ServiceName);
+                Type inputBusinessModel = _assemblyManagerService.GetInuptBusiness(ruleEntity.CategoryService, ruleEntity.ServiceName);
+                var inputModel = JsonConvert.DeserializeObject(ruleEntity.JsonValue, inputBusinessModel);
+                var businessEngine = Activator.CreateInstance(foundServiceInstance.GetType());
 
-            MethodInfo performAsyncLogicMethod = foundServiceInstance.GetType().GetMethod("PerformAsyncLogic", BindingFlags.NonPublic | BindingFlags.Instance);
+                MethodInfo performAsyncLogicMethod = foundServiceInstance.GetType().GetMethod("PerformAsyncLogic", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            var performAsyncLogicTask = (Task<object>)performAsyncLogicMethod.Invoke(businessEngine, new object[] { JsonConvert.SerializeObject(outputSearchJson), inputModel, objects });
-            return await performAsyncLogicTask;
+                var performAsyncLogicTask = (Task<object>)performAsyncLogicMethod.Invoke(businessEngine, new object[] { JsonConvert.SerializeObject(outputSearchJson), inputModel, objects });
+                return await performAsyncLogicTask;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void InvokeFromDatabaseAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson) 
