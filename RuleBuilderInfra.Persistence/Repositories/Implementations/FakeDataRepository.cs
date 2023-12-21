@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace RuleBuilderInfra.Persistence.Repositories.Implementations
 {
-    public class FakeDataRepository : BaseRepository, IFakeDataRepository
+    public class FakeDataRepository : MainBaseRepository, IFakeDataRepository
     {
-        public FakeDataRepository(RuleEngineContext ruleEngineContext) : base(ruleEngineContext)
+        public FakeDataRepository(MainDatabase mainDbContext) : base(mainDbContext)
         {
         }
 

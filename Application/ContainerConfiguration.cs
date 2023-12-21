@@ -17,6 +17,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RuleBuilderInfra.Application.Mapping;
+using RuleBuilderInfra.Persistence.Migrations;
+
 
 namespace RuleBuilderInfra.Application
 {
@@ -33,7 +35,6 @@ namespace RuleBuilderInfra.Application
             #region Repositories
             serviceDescriptors.AddTransient<IUnitOfWork, UnitOfWork>();
             serviceDescriptors.AddTransient<IConditionRepository, ConditionRepository>();
-            serviceDescriptors.AddTransient<IFakeDataRepository, FakeDataRepository>();
             serviceDescriptors.AddTransient<IFieldOperatorJoiningRepository, FieldOperatorJoiningRepository>();
             serviceDescriptors.AddTransient<IOperatorTypesRepository, OperatorTypesRepository>();
             serviceDescriptors.AddTransient<IFieldTypesRepository, FieldTypesRepository>();
@@ -60,11 +61,19 @@ namespace RuleBuilderInfra.Application
 
             #region Services
             serviceDescriptors.AddTransient<IConditionService, ConditionService>();
-            serviceDescriptors.AddTransient<IFakeDataService, FakeDataService>();
             serviceDescriptors.AddTransient<IFieldOperatorJoiningService, FieldOperatorJoiningService>();
             serviceDescriptors.AddTransient<IFieldTypesService, FieldTypesService>();
             serviceDescriptors.AddTransient<IOperatorTypesService, OperatorTypesService>();
             #endregion
+
+            using (var scope = serviceDescriptors.BuildServiceProvider().CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var dbContext = services.GetRequiredService<RuleEngineContext>();
+                var migrationsAssembly = typeof(InitialMigration).Assembly;
+                dbContext.Database.Migrate();
+                dbContext.SaveChanges();
+            }
 
         }
     }

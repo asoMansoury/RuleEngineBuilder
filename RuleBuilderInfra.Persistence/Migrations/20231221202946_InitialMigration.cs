@@ -7,7 +7,7 @@
 namespace RuleBuilderInfra.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class initialSteps : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,7 +27,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "fakeDataEntities",
+                name: "FakeDataEntity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -38,7 +38,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_fakeDataEntities", x => x.Id);
+                    table.PrimaryKey("PK_FakeDataEntity", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,20 +67,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "provincesEntities",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_provincesEntities", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ruleEntities",
                 columns: table => new
                 {
@@ -89,9 +75,10 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     EntityCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EntityCategoryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RuleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JsonValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryService = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ServiceName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ServiceName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConditionJson = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,16 +110,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "conditionEntities",
-                columns: new[] { "Id", "Code", "Name" },
-                values: new object[,]
-                {
-                    { 1, "AND", "And" },
-                    { 2, "OR", "Or" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "fakeDataEntities",
+                table: "FakeDataEntity",
                 columns: new[] { "Id", "Distributer", "Movie", "Province" },
                 values: new object[,]
                 {
@@ -144,6 +122,15 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     { 6, "Lionsgate", "The Notebook", "Quebec" },
                     { 7, "Disney", "Notebook", "Quebec" },
                     { 8, "Disney", "Sinderella", "Quebec" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "conditionEntities",
+                columns: new[] { "Id", "Code", "Name" },
+                values: new object[,]
+                {
+                    { 1, "AND", "And" },
+                    { 2, "OR", "Or" }
                 });
 
             migrationBuilder.InsertData(
@@ -169,16 +156,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     { "Lte", "LessThanOrEqual" },
                     { "NEq", "NotEqual" },
                     { "Stw", "StartsWith" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "provincesEntities",
-                columns: new[] { "Id", "Code", "Name" },
-                values: new object[,]
-                {
-                    { 1, "ON", "Onatrio" },
-                    { 2, "QB", "Quebec" },
-                    { 3, "MN", "Montreal" }
                 });
 
             migrationBuilder.InsertData(
@@ -217,13 +194,10 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 name: "conditionEntities");
 
             migrationBuilder.DropTable(
-                name: "fakeDataEntities");
+                name: "FakeDataEntity");
 
             migrationBuilder.DropTable(
                 name: "fieldOperatorJoiningEntities");
-
-            migrationBuilder.DropTable(
-                name: "provincesEntities");
 
             migrationBuilder.DropTable(
                 name: "ruleEntities");

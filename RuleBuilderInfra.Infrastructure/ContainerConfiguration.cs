@@ -33,8 +33,7 @@ namespace RuleBuilderInfra.Infrastructure
 
             #region Repositories
             serviceDescriptors.AddTransient<IUnitOfWork, UnitOfWork>();
-            serviceDescriptors.AddTransient<IConditionRepository, ConditionRepository>();
-            serviceDescriptors.AddTransient<IFakeDataRepository, FakeDataRepository>();
+            serviceDescriptors.AddTransient<IConditionRepository, ConditionRepository>();;
             serviceDescriptors.AddTransient<IFieldOperatorJoiningRepository, FieldOperatorJoiningRepository>();
             serviceDescriptors.AddTransient<IOperatorTypesRepository, OperatorTypesRepository>();
             serviceDescriptors.AddTransient<IFieldTypesRepository, FieldTypesRepository>();

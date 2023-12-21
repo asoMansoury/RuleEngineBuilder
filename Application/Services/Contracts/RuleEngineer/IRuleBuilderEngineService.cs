@@ -13,6 +13,7 @@ namespace RuleBuilderInfra.Application.Services.Contracts.RuleEngineer
     public interface IRuleBuilderEngineService<T, TResult> where TResult : ScannedEntity
                                                            where T : ScannedEntity
     {
+        Func<T, bool> GenerateQueryBuilderQuery(RuleEntity ruleEntity);
         List<TResult> GenerateQueryBuilder(RuleEntity ruleEntity);
 
         Task<List<RuleEngineProperties>> GetPropertyPairs();

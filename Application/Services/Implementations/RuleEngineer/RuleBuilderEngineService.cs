@@ -48,6 +48,11 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
             return _mapper.Map<List<T>, List<TResult>>(data);
         }
 
+        public Func<T, bool> GenerateQueryBuilderQuery(RuleEntity ruleEntity)
+        {
+            return _ruleBuilderEngineRepo.GenerateQueryBuilder(ruleEntity);
+        }
+
         public async Task<List<RuleEngineProperties>> GetPropertyPairs()
         {
             var result = new List<RuleEngineProperties>();

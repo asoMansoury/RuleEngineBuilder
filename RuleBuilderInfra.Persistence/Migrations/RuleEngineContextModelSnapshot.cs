@@ -78,7 +78,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("fakeDataEntities");
+                    b.ToTable("FakeDataEntity");
 
                     b.HasData(
                         new
@@ -303,47 +303,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ProvincesEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("provincesEntities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "ON",
-                            Name = "Onatrio"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "QB",
-                            Name = "Quebec"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "MN",
-                            Name = "Montreal"
-                        });
-                });
-
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.RuleEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -369,7 +328,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("JsonValue")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("JsonValue");
 

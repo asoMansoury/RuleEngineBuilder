@@ -18,7 +18,7 @@ namespace RuleBuilderInfra.Persistence
             var FieldOperatorJoiningData = CommonUtility.LoadJsonFile<List<FieldOperatorJoiningEntity>>("FieldOperatorJoining.json");
             var fieldTypesData = CommonUtility.LoadJsonFile<List<FieldTypesEntity>>("FieldTypes.json");
             var fakeDataEntities = CommonUtility.LoadJsonFile<List<FakeDataEntity>>("FakeData.json");
-            var provinceEntities = CommonUtility.LoadJsonFile<List<ProvincesEntity>>("Provinces.json");
+
 
 
             conditionData?.ForEach(conditionData =>
@@ -45,10 +45,7 @@ namespace RuleBuilderInfra.Persistence
                 modelBuilder.Entity<FakeDataEntity>().HasData(fakeDataEntity);
             });
 
-            provinceEntities?.ForEach(provinceEntity =>
-            {
-                modelBuilder.Entity<ProvincesEntity>().HasData(provinceEntity);
-            });
+
         }
     }
 }

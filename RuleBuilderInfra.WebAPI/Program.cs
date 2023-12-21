@@ -2,16 +2,30 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RuleBuilderInfra.Persistence;
 using RuleBuilderInfra.Application;
+using Microsoft.Extensions.DependencyInjection;
+using RuleBuilderInfra.Application.Services.Contracts;
+using RuleBuilderInfra.Application.Services.Implementations;
+using RuleBuilderInfra.Persistence.Repositories.Contracts;
+using RuleBuilderInfra.Persistence.Repositories.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager? Configuration = builder.Configuration;
+String connectionStringMain = Configuration.GetConnectionString("DefaultConnectionMain");
 String connectionString = Configuration.GetConnectionString("DefaultConnection");
-
 // Add services to the container.
 builder.Services.AddControllers();
 
+builder.Services.AddDbContext<MainDatabase>((options) =>
+{
+    options.UseSqlServer(connectionStringMain);
+});
+
+
+builder.Services.AddTransient<IFakeDataRepository, FakeDataRepository>();
 builder.Services.DependencyInjectionStart(connectionString);
 
+
+builder.Services.AddTransient<IFakeDataService, FakeDataService>();
 
 builder.Services.AddCors(options =>
 {
@@ -26,11 +40,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var dbContext = services.GetRequiredService<RuleEngineContext>();
-}
+
 //Seeding Database with initial data 
 app.UseCors("CorsPolicy");
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RuleBuilderInfra.Application.PresentationModels;
 using RuleBuilderInfra.Application.PresentationModels.RuleEngineModels;
@@ -7,6 +8,9 @@ using RuleBuilderInfra.Application.Services.Contracts.RuleEngineer;
 using RuleBuilderInfra.Domain.Entities;
 using RuleBuilderInfra.Domain.ScanningEntities;
 using RuleBuilderInfra.Persistence;
+using RuleBuilderInfra.Persistence.Repositories.Contracts;
+using RuleBuilderInfra.Persistence.Repositories.Contracts.RuleEngine;
+using RuleBuilderInfra.Persistence.Repositories.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +25,21 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IFieldTypesService _fieldTypesService;
+        private readonly DbContext _ruleEngineContext;
+        private readonly DbContext _mainContext;
+
         private readonly IMapper _mapper;
         public ScanEntitiesEngineService(IServiceProvider serviceProvider,
                                           IFieldTypesService fieldTypesService,
+                                          RuleEngineContext ruleEngineContext,
+                                          MainDatabase mainDatabase,
                                           IMapper mapper)
         {
             _serviceProvider = serviceProvider;
             _fieldTypesService = fieldTypesService;
             _mapper = mapper;
+            _ruleEngineContext = ruleEngineContext;
+            _mainContext = mainDatabase;
         }
 
         private List<Type> LoadAllAssemblies(string assemblyName)
@@ -99,10 +110,13 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
         public async Task<object> GenerateQueryBuilder(RuleEntity ruleEntity)
         {
             var obj = ruleBuilderInstantiator(ruleEntity.EntityCategoryCode, ruleEntity.EntityCode);
-            var data = obj.GenerateQueryBuilder(ruleEntity);
-            return data;
-        }
+            var data = obj.GenerateQueryBuilderQuery(ruleEntity);
 
+            IQueryBuilderRepositoryExternal<FakeDataEntity, MainDatabase> query = new QueryBuilderRepositoryExternal<FakeDataEntity, MainDatabase>(_mainContext);
+            var data234 = query.GetDataGenericBuilder(data);
+            //var data = obj.GenerateQueryBuilder(ruleEntity);
+            return data234;
+        }
 
 
         #region Private Methods
@@ -123,6 +137,17 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
             Type tEntity = assembly.GetType(entityTypeCode); // Replace with your actual type
             Type tResultEntity = typeof(ScannedEntity);
             Type closedGenericType = typeof(IRuleBuilderEngineService<,>).MakeGenericType(tEntity, tResultEntity);
+            var checkEntityScannedValidator = _serviceProvider.GetService(closedGenericType) as dynamic;
+            return checkEntityScannedValidator;
+        }
+
+        private dynamic ruleQueryBuilderInstantiator(string assemblyName, string entityTypeCode)
+        {
+            Assembly assembly = Assembly.Load(assemblyName);
+
+            Type tEntity = assembly.GetType(entityTypeCode); // Replace with your actual type
+            Type tResultEntity = typeof(ScannedEntity);
+            Type closedGenericType = typeof(IRuleBuilderEngineRepo<>).MakeGenericType(tEntity);
             var checkEntityScannedValidator = _serviceProvider.GetService(closedGenericType) as dynamic;
             return checkEntityScannedValidator;
         }
