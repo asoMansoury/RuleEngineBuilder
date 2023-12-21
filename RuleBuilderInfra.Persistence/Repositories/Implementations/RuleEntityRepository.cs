@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using RuleBuilderInfra.Domain.Entities;
 using RuleBuilderInfra.Persistence.Repositories.Contracts;
 using System;
@@ -13,18 +14,19 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
     {
         public RuleEntityRepository(RuleEngineContext ruleEngineContext) : base(ruleEngineContext)
         {
+
         }
 
         public async Task<RuleEntity> AddAsync(RuleEntity entity)
         {
             entity.Id = 0;
-            _dbContext.Add(entity); 
+            _dbContext.Add(entity);
             return entity;
         }
 
         public async Task<List<RuleEntity>> GetAllAsync()
         {
-            var entities = _dbContext.ruleEntities.ToList().ToList() ;
+            var entities = _dbContext.ruleEntities.ToList().ToList();
             return entities;
         }
 
