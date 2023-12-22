@@ -24,8 +24,9 @@ namespace RuleBuilderInfra.Application
 {
     public static class ContainerConfiguration
     {
-        public static void DependencyInjectionStart(this IServiceCollection serviceDescriptors, string ConnectionString)
+        public static void DependencyInjectionEntityFramework(this IServiceCollection serviceDescriptors, string ConnectionString)
         {
+
             serviceDescriptors.AddDbContext<RuleEngineContext>((options) =>
             {
                 options.UseSqlServer(ConnectionString);
@@ -38,12 +39,11 @@ namespace RuleBuilderInfra.Application
             serviceDescriptors.AddTransient<IFieldOperatorJoiningRepository, FieldOperatorJoiningRepository>();
             serviceDescriptors.AddTransient<IOperatorTypesRepository, OperatorTypesRepository>();
             serviceDescriptors.AddTransient<IFieldTypesRepository, FieldTypesRepository>();
-            serviceDescriptors.AddTransient(typeof(IRuleBuilderEngineService<,>), typeof(RuleBuilderEngineService<,>));
-            serviceDescriptors.AddTransient(typeof(IQueryBuilderRepository<>), typeof(QueryBuilderRepository<>));
             serviceDescriptors.AddTransient(typeof(IRuleBuilderEngineRepo<>), typeof(RuleBuilderEngineRepo<>));
             serviceDescriptors.AddTransient(typeof(ICheckEntityIsScanned<>), typeof(CheckEntityIsScanned<>));
             serviceDescriptors.AddTransient<IScanEntitiesEngineService, ScanEntitiesEngineService>();
             serviceDescriptors.AddTransient<ICallingBusinessServiceMediator, BusinessServiceDescriptors>();
+            serviceDescriptors.AddTransient(typeof(IQueryBuilderRepositoryExternal<,>),typeof(QueryBuilderRepositoryExternal<,>));
             serviceDescriptors.AddSingleton<ICategoryManagerService, CategoryManagerService>();
             serviceDescriptors.AddTransient<IRuleEntityRepository, RuleEntityRepository>();
             serviceDescriptors.AddTransient<IRuleManagerService, RuleManagerService>();
@@ -74,6 +74,11 @@ namespace RuleBuilderInfra.Application
                 dbContext.Database.Migrate();
                 dbContext.SaveChanges();
             }
+
+        }
+
+        public static void DependencyInjectionSqlLiteDB(this IServiceCollection serviceDescriptors, string ConnectionString)
+        {
 
         }
     }

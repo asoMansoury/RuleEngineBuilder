@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApplicationTest.Services;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RuleBuilderInfra.Application.PresentationModels;
 using RuleBuilderInfra.Application.PresentationModels.BuisinessEngineModels;
@@ -29,18 +30,21 @@ namespace RuleBuilderInfra.WebAPI.Controllers
         [HttpGet(nameof(GetCategories))]
         public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
         {
+
             return Ok(_assemblyManagerService.GetAllCategories());
         }
 
         [HttpGet(nameof(GetBusinessServices))]
         public async Task<IActionResult> GetBusinessServices(CancellationToken cancellationToken)
         {
+            
             return Ok(_assemblyManagerService.GetBusinessServices());
         }
 
         [HttpGet(nameof(GetServiceInputProperties))]
         public async Task<IActionResult> GetServiceInputProperties([FromQuery] string CategoryService, [FromQuery] string ServiceName, CancellationToken cancellationToken)
         {
+
             return Ok(_assemblyManagerService.GetServiceInputProperties(CategoryService, ServiceName, cancellationToken));
         }
     }

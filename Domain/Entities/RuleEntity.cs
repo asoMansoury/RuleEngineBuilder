@@ -74,4 +74,15 @@ namespace RuleBuilderInfra.Domain.Entities
         [JsonIgnore]
         public String ConditionJson { get; set; }
     }
+
+    public class RunningSavedRule
+    {
+        public int Id { get; set; }
+
+        public object? Value
+        { get; set; }
+
+
+
+    }
 }

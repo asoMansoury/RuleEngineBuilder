@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RuleBuilderInfra.Application.PresentationModels;
 using RuleBuilderInfra.Application.PresentationModels.RuleEngineModels;
@@ -51,7 +52,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
         private List<Type> LoadAllAssembliesByAttribute(string assemblyName)
         {
             Assembly assm = Assembly.Load(assemblyName);
-            return assm.GetTypes().Where(z => z.GetCustomAttributes(typeof(ScanningAttribute)).Any(e=>e.GetType()== typeof(ScanningAttribute))).ToList();
+            return assm.GetTypes().Where(z => z.GetCustomAttributes(typeof(ScanningAttribute)).Any(e => e.GetType() == typeof(ScanningAttribute))).ToList();
         }
 
         public List<ScannableEntities> GetAllScannableEntities(string assemblyName)
@@ -68,7 +69,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
                     EntityCode = assemblyQualifiedName,
                     EntityAssembly = assemblyQualifiedName,
                     Description = scannAttributeProperties.EntityDescription,
-                    Name = scannAttributeProperties.IsNameSet==true? scannAttributeProperties.Name:item.Name
+                    Name = scannAttributeProperties.IsNameSet == true ? scannAttributeProperties.Name : item.Name
                 });
             });
 
@@ -109,13 +110,13 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
 
         public async Task<object> GenerateQueryBuilder(RuleEntity ruleEntity)
         {
-            var obj = ruleBuilderInstantiator(ruleEntity.EntityCategoryCode, ruleEntity.EntityCode);
-            var data = obj.GenerateQueryBuilderQuery(ruleEntity);
+            var queryBuilder = ruleQueryBuilderInstantiator(ruleEntity.EntityCategoryCode, ruleEntity.EntityCode);
+            var generatedQuery = queryBuilder.GenerateQueryBuilder(ruleEntity);
 
-            IQueryBuilderRepositoryExternal<FakeDataEntity, MainDatabase> query = new QueryBuilderRepositoryExternal<FakeDataEntity, MainDatabase>(_mainContext);
-            var data234 = query.GetDataGenericBuilder(data);
-            //var data = obj.GenerateQueryBuilder(ruleEntity);
-            return data234;
+            var queryRunner = queryBuilderRepositoryInstantiator(ruleEntity.EntityCategoryCode, ruleEntity.EntityCode);
+            var result = queryRunner.GetDataGenericBuilder(generatedQuery);
+
+            return result;
         }
 
 
@@ -130,26 +131,38 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
             return checkEntityScannedValidator;
         }
 
-        private dynamic ruleBuilderInstantiator(string assemblyName, string entityTypeCode)
-        {
-            Assembly assembly = Assembly.Load(assemblyName);
 
-            Type tEntity = assembly.GetType(entityTypeCode); // Replace with your actual type
-            Type tResultEntity = typeof(ScannedEntity);
-            Type closedGenericType = typeof(IRuleBuilderEngineService<,>).MakeGenericType(tEntity, tResultEntity);
-            var checkEntityScannedValidator = _serviceProvider.GetService(closedGenericType) as dynamic;
-            return checkEntityScannedValidator;
-        }
 
         private dynamic ruleQueryBuilderInstantiator(string assemblyName, string entityTypeCode)
         {
             Assembly assembly = Assembly.Load(assemblyName);
 
-            Type tEntity = assembly.GetType(entityTypeCode); // Replace with your actual type
+            Type tEntity = assembly!.GetType(entityTypeCode)!;
             Type tResultEntity = typeof(ScannedEntity);
             Type closedGenericType = typeof(IRuleBuilderEngineRepo<>).MakeGenericType(tEntity);
             var checkEntityScannedValidator = _serviceProvider.GetService(closedGenericType) as dynamic;
-            return checkEntityScannedValidator;
+            return checkEntityScannedValidator!;
+        }
+
+        private dynamic queryBuilderRepositoryInstantiator(string assemblyName, string entityTypeCode)
+        {
+            Type tEntity = entityGenerator(assemblyName, entityTypeCode);
+            Type mainDBContextType = _mainContext.GetType();
+
+            // Create an instance of QueryBuilderRepositoryExternal using generics
+            Type queryBuilderRepoType = typeof(QueryBuilderRepositoryExternal<,>);
+            Type genericQueryBuilderRepoType = queryBuilderRepoType.MakeGenericType(tEntity, mainDBContextType);
+            object[] constructorArgs = { _mainContext };  // Pass _mainContext to the constructor
+            object runner = Activator.CreateInstance(genericQueryBuilderRepoType, constructorArgs)!;
+            return runner!;
+        }
+
+        private Type entityGenerator(string assemblyName, string entityTypeCode)
+        {
+            Assembly assembly = Assembly.Load(assemblyName);
+
+            Type tEntity = assembly!.GetType(entityTypeCode)!;
+            return tEntity;
         }
         #endregion
     }

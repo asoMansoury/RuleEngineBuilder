@@ -32,7 +32,7 @@ namespace RuleBuilderInfra.Application.Services
         //    businessEngine.InvokeAsync(outputSearchJson, inuptBusiness);
         //}
 
-        public void InvokeAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson) 
+        public void InvokeAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson, params object[] objects) 
         {
             object foundServiceInstance = _assemblyManagerService.GetSelectedServiceType(categoryService, serviceName);
             Type inputBusinessModel = _assemblyManagerService.GetInuptBusiness(categoryService, serviceName);
@@ -40,7 +40,7 @@ namespace RuleBuilderInfra.Application.Services
             var businessEngine = Activator.CreateInstance(foundServiceInstance.GetType());
 
             MethodInfo performAsyncLogicMethod = foundServiceInstance.GetType().GetMethod("PerformAsyncLogic", BindingFlags.NonPublic | BindingFlags.Instance);
-            Task performAsyncLogicTask = (Task)performAsyncLogicMethod.Invoke(businessEngine, new[] { outputSearchJson, inputModel });
+            Task performAsyncLogicTask = (Task)performAsyncLogicMethod.Invoke(businessEngine, new[] { outputSearchJson, inputModel, objects });
 
         }
 

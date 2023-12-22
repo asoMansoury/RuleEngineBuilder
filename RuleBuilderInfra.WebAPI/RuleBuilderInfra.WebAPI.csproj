@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationTest\ApplicationTest.csproj" />
     <ProjectReference Include="..\Application\RuleBuilderInfra.Application.csproj" />
     <ProjectReference Include="..\RuleBuilderInfra.Infrastructure\RuleBuilderInfra.Infrastructure.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />

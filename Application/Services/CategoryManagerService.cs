@@ -4,10 +4,11 @@ using RuleBuilderInfra.Application.PresentationModels;
 using System.ComponentModel;
 using RuleBuilderInfra.Application.PresentationModels.BuisinessEngineModels;
 using RuleBuilderInfra.Persistence;
+using System.Data;
 
 namespace RuleBuilderInfra.Application.Services
 {
-    public class CategoryManagerService: ICategoryManagerService
+    public class CategoryManagerService : ICategoryManagerService
     {
 
 
@@ -28,8 +29,8 @@ namespace RuleBuilderInfra.Application.Services
             var assemblyItem = Assembly.Load("RuleBuilderInfra.Application");
             _categoryServicesStore.Add(new CategoryServiceModel
             {
-                AssemblyPath = assemblyItem.FullName.Split(",")[0],
-                CategoryName = CategoriesAssemblyNameEnum.BaseService.GetAttribute<DescriptionAttribute>().Description
+                AssemblyPath = assemblyItem!.FullName!.Split(",")[0],
+                CategoryName = CategoriesAssemblyNameEnum.BaseService.GetAttribute<DescriptionAttribute>()!.Description
             });
         }
 
@@ -51,13 +52,19 @@ namespace RuleBuilderInfra.Application.Services
                         z.BaseType != null &&
                         z.BaseType.Name.Equals(GenericeTypes.Name)).ToList().ForEach((derivedItem) =>
                         {
-                            _businessServicesStore.Add(new BusinessServiceModel
+                            if (!_businessServicesStore.Any(serviceItem => serviceItem.ServiceAssembly == derivedItem!.AssemblyQualifiedName!.Split(',')[0] &&
+                                                                       serviceItem.CategoryService == assemblyItem.CategoryName &&
+                                                                       serviceItem.ServiceName == derivedItem.Name.Split('.')[0]))
                             {
-                                CategoryService = assemblyItem.CategoryName,
-                                ServiceName = derivedItem.Name.Split('.')[0],
-                                ServiceAssembly = derivedItem.AssemblyQualifiedName.Split(',')[0]
+                                _businessServicesStore.Add(new BusinessServiceModel
+                                {
+                                    CategoryService = assemblyItem.CategoryName,
+                                    ServiceName = derivedItem.Name.Split('.')[0],
+                                    ServiceAssembly = derivedItem!.AssemblyQualifiedName!.Split(',')[0]
 
-                            });
+                                });
+                            }
+
                         });
 
             });
@@ -66,16 +73,16 @@ namespace RuleBuilderInfra.Application.Services
 
         public object GetSelectedServiceType(string categoryService, string serviceName)
         {
-            if(!_businessServicesStore.Any(item => item.ServiceName == serviceName && item.CategoryService == categoryService))
+            if (!_businessServicesStore.Any(item => item.ServiceName == serviceName && item.CategoryService == categoryService))
                 throw new ArgumentNullException(nameof(GetSelectedServiceType));
-            
-            var selectedService = _businessServicesStore.SingleOrDefault(item => item.ServiceName == serviceName && item.CategoryService == categoryService);
-            var selectedCategory = _categoryServicesStore.SingleOrDefault(category => category.CategoryName == selectedService.CategoryService);
 
-            Assembly assembly = Assembly.Load(selectedCategory.AssemblyPath);
-            Type entityType = assembly.GetType(selectedService.ServiceAssembly);
+            var selectedService = _businessServicesStore.SingleOrDefault(item => item.ServiceName == serviceName && item.CategoryService == categoryService)!;
+            var selectedCategory = _categoryServicesStore.SingleOrDefault(category => category.CategoryName == selectedService.CategoryService)!;
 
-            return Activator.CreateInstance(entityType); 
+            Assembly assembly = Assembly.Load(selectedCategory!.AssemblyPath!);
+            Type entityType = assembly!.GetType(selectedService!.ServiceAssembly!)!;
+
+            return Activator.CreateInstance(entityType)!;
         }
 
         public List<BusinessServiceModel> GetBusinessServices()
@@ -101,13 +108,14 @@ namespace RuleBuilderInfra.Application.Services
         public void RegisterNewCategoryService(Assembly loadedAssembly, string categoryName)
         {
             if (_categoryServicesStore.Any(z => z.CategoryName == categoryName))
-                throw new InvalidEnumArgumentException(categoryName);
+                throw new DuplicateNameException(categoryName);
 
             _categoryServicesStore.Add(new CategoryServiceModel
             {
-                AssemblyPath = loadedAssembly.FullName.Split(",")[0],
+                AssemblyPath = loadedAssembly!.FullName!.Split(",")[0],
                 CategoryName = categoryName
             });
+            RegisterInitialBusinessServices();
         }
 
         public void RegisterNewBusinesServices(Assembly businessAssembly, string serviceName, string categoryName)
@@ -126,7 +134,7 @@ namespace RuleBuilderInfra.Application.Services
                             {
                                 CategoryService = categoryName,
                                 ServiceName = derivedItem.Name.Split('.')[0],
-                                ServiceAssembly = derivedItem.AssemblyQualifiedName.Split(',')[0]
+                                ServiceAssembly = derivedItem!.AssemblyQualifiedName!.Split(',')[0]
 
                             });
                         });
@@ -138,11 +146,11 @@ namespace RuleBuilderInfra.Application.Services
                 throw new ArgumentNullException(nameof(GetSelectedServiceType));
 
             var selectedService = _businessServicesStore.SingleOrDefault(item => item.ServiceName == serviceName && item.CategoryService == categoryService);
-            var selectedCategory = _categoryServicesStore.SingleOrDefault(category => category.CategoryName == selectedService.CategoryService);
+            var selectedCategory = _categoryServicesStore.SingleOrDefault(category => category.CategoryName == selectedService!.CategoryService!);
 
-            Assembly assembly = Assembly.Load(selectedCategory.AssemblyPath);
-            Type entityType = assembly.GetType(selectedService.ServiceAssembly);
-            MethodInfo performAsyncLogicMethod = entityType.GetMethod("PerformAsyncLogic", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assembly assembly = Assembly.Load(selectedCategory!.AssemblyPath);
+            Type entityType = assembly.GetType(selectedService!.ServiceAssembly!)!;
+            MethodInfo performAsyncLogicMethod = entityType!.GetMethod("PerformAsyncLogic", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
             Type returnType = performAsyncLogicMethod.ReturnType;
             Type inputBusinessType = performAsyncLogicMethod.GetParameters()[1].ParameterType;

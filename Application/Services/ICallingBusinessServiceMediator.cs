@@ -14,7 +14,7 @@ namespace RuleBuilderInfra.Application.Services
 {
     public interface ICallingBusinessServiceMediator
     {
-        void InvokeAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson);
+        void InvokeAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson, params object[] objects);
         Task<object> InvokeAsync(int ruleEntityId, params object[] objects);
     }
 }

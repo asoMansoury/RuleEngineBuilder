@@ -76,7 +76,7 @@ namespace RuleBuilderInfra.WebAPI.Controllers
 
 
         [HttpPost(nameof(ExecuteMethodByRuleEntityID))]
-        public async Task<IActionResult> ExecuteMethodByRuleEntityID([FromBody] RuleEntity ruleEntity)
+        public async Task<IActionResult> ExecuteMethodByRuleEntityID([FromBody] RunningSavedRule ruleEntity)
         {
             var result = await _callingBusinessServiceMediator.InvokeAsync(ruleEntity.Id, ruleEntity.Value);
             return Ok(result);

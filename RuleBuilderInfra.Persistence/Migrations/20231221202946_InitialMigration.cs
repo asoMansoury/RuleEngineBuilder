@@ -27,21 +27,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FakeDataEntity",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Movie = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Province = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Distributer = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FakeDataEntity", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "fieldTypesEntities",
                 columns: table => new
                 {
@@ -107,21 +92,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
                         principalTable: "operatorTypesEntities",
                         principalColumn: "OperatorTypeCode",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "FakeDataEntity",
-                columns: new[] { "Id", "Distributer", "Movie", "Province" },
-                values: new object[,]
-                {
-                    { 1, "Paramond", "Spider", "Ontario" },
-                    { 2, "Paramond", "Sinderella", "Quebec" },
-                    { 3, "Disney", "The Notebook", "Calgary" },
-                    { 4, "Paramond", "Spider", "Ontario" },
-                    { 5, "Lionsgate", "SpiderMan", "Ontario" },
-                    { 6, "Lionsgate", "The Notebook", "Quebec" },
-                    { 7, "Disney", "Notebook", "Quebec" },
-                    { 8, "Disney", "Sinderella", "Quebec" }
                 });
 
             migrationBuilder.InsertData(
@@ -192,9 +162,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "conditionEntities");
-
-            migrationBuilder.DropTable(
-                name: "FakeDataEntity");
 
             migrationBuilder.DropTable(
                 name: "fieldOperatorJoiningEntities");
