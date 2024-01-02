@@ -10,7 +10,7 @@ namespace RuleBuilderInfra.Application.Services.Contracts
 {
     public interface IConditionService
     {
-        Task<List<ConditionModel>> GetConditionEntitiesAsync();
-        Task<List<ConditionModel>> GetCondifitionEntityByCodeAsync();
+        Task<List<ConditionEntity>> GetConditionEntitiesAsync();
+        Task<List<ConditionEntity>> GetCondifitionEntityByCodeAsync();
     }
 }

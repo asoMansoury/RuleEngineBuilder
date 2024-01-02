@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using RuleBuilderInfra.Application.Mapping;
 using RuleBuilderInfra.Application.PresentationModels;
 using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Domain.Entities;
@@ -12,19 +12,19 @@ namespace RuleBuilderInfra.Application.Services.Implementations
     {
         private readonly IOperatorTypesRepository _operatorTypesRepository;
         private readonly IFieldOperatorJoiningRepository _fieldOperatorJoiningRepository;
-        public OperatorTypesService(IUnitOfWork unitOfWork, 
-                                    IMapper mapper,
-                                    IOperatorTypesRepository operatorTypesRepository, 
-                                    IFieldOperatorJoiningRepository fieldOperatorJoiningRepository) : base(unitOfWork, mapper)
+        public OperatorTypesService(IUnitOfWork unitOfWork,
+
+                                    IOperatorTypesRepository operatorTypesRepository,
+                                    IFieldOperatorJoiningRepository fieldOperatorJoiningRepository) : base(unitOfWork)
         {
             this._operatorTypesRepository = operatorTypesRepository;
             _fieldOperatorJoiningRepository = fieldOperatorJoiningRepository;
         }
 
-        public async Task<List<OperatorTypesModel>> GetOperatorTypesAsync(string fieldTypeCode)
+        public async Task<List<FieldOperatorJoiningModel>> GetOperatorTypesAsync(string fieldTypeCode)
         {
-            List<FieldOperatorJoiningEntity> allFieldOperatos =await _fieldOperatorJoiningRepository.GetFieldOperatorByCode(fieldTypeCode);
-            return _mapper.Map<List<FieldOperatorJoiningEntity>,List <OperatorTypesModel>>(allFieldOperatos);
+            var data = await _fieldOperatorJoiningRepository.GetFieldOperatorByCode(fieldTypeCode);
+            return ManuallMapping.Map(data);
         }
     }
 }

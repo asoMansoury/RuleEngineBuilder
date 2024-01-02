@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿
 using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Domain.Entities;
 using RuleBuilderInfra.Persistence;
@@ -16,8 +16,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations
     {
         private readonly IRuleEntityRepository _ruleEntityRepository;
         public RuleManagerService(IUnitOfWork unitOfWork, 
-                                  IMapper mapper,
-                                  IRuleEntityRepository ruleEntityRepository) : base(unitOfWork, mapper)
+                                  IRuleEntityRepository ruleEntityRepository) : base(unitOfWork)
         {
             _ruleEntityRepository = ruleEntityRepository;   
         }

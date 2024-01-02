@@ -1,5 +1,5 @@
 ﻿
-using AutoMapper;
+
 using RuleBuilderInfra.Persistence;
 
 namespace RuleBuilderInfra.Application
@@ -7,12 +7,9 @@ namespace RuleBuilderInfra.Application
     public abstract class BaseService : IBaseService
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly IMapper _mapper;
-        public BaseService(IUnitOfWork unitOfWork,
-                            IMapper mapper)
+        public BaseService(IUnitOfWork unitOfWork)
         {
             this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
         }
         public bool SaveChanges()
         {

@@ -3,10 +3,12 @@ using RuleBuilderInfra.Application.Services.Contracts;
 
 namespace RuleBuilderInfra.WebAPI.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class FakeDataController : Controller
     {
+        
         private readonly IFakeDataService _fakeDataService;
         public FakeDataController(IFakeDataService fakeDataService)
         {

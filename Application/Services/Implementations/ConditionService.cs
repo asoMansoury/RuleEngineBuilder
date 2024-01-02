@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using RuleBuilderInfra.Application.PresentationModels;
+﻿using RuleBuilderInfra.Application.PresentationModels;
 using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Domain.Entities;
 using RuleBuilderInfra.Persistence;
@@ -15,22 +14,20 @@ namespace RuleBuilderInfra.Application.Services.Implementations
     public class ConditionService : BaseService, IConditionService
     {
         private readonly IConditionRepository _conditionRepository;
-        public ConditionService(IUnitOfWork unitOfWork,IMapper mapper,IConditionRepository conditionRepository) : base(unitOfWork,mapper)
+        public ConditionService(IUnitOfWork unitOfWork,IConditionRepository conditionRepository) : base(unitOfWork)
         {
             _conditionRepository = conditionRepository;
         }
 
-        public Task<List<ConditionModel>> GetCondifitionEntityByCodeAsync()
+        public Task<List<ConditionEntity>> GetCondifitionEntityByCodeAsync()
         {
-            var conditionEntities = _conditionRepository.GetAllConditions();
-            return Task.FromResult(base._mapper.Map<List<ConditionModel>>(conditionEntities));
+            return _conditionRepository.GetAllConditions();
         }
 
-        public async Task<List<ConditionModel>> GetConditionEntitiesAsync()
+        public async Task<List<ConditionEntity>> GetConditionEntitiesAsync()
         {
             var conditionEntities = await _conditionRepository.GetAllConditions();
-            var result = base._mapper.Map<List<ConditionModel>>(conditionEntities);
-            return result;
+            return conditionEntities;
         }
     }
 }

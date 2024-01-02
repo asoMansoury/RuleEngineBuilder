@@ -5,6 +5,7 @@ using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Application.Services.Contracts.RuleEngineer;
 using RuleBuilderInfra.Application.Services.Implementations.RuleEngineer;
 using RuleBuilderInfra.Domain.Entities;
+using RuleBuilderInfra.Persistence;
 using System.Reflection;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,12 +19,11 @@ namespace RuleBuilderInfra.WebAPI.Controllers
         private readonly IFieldTypesService _fieldTypesService;
         private readonly IOperatorTypesService _operatorTypesService;
         private readonly IConditionService _conditionServices;
-        private readonly ICallingBusinessServiceMediator _callingBusinessServiceMediator;
+        private readonly ICallingBusinessServiceMediator<MainDatabase> _callingBusinessServiceMediator;
         public EngineDataController(IFieldTypesService fieldTypesService,
                                     IOperatorTypesService operatorTypesService,
                                     IConditionService conditionService,
-                                    IScanEntitiesEngineService scanEntitiesEngineService,
-                                    ICallingBusinessServiceMediator callingBusinessServiceMediator)
+                                    ICallingBusinessServiceMediator<MainDatabase> callingBusinessServiceMediator)
         {
             this._fieldTypesService = fieldTypesService;
             this._operatorTypesService = operatorTypesService;

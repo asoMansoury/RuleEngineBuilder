@@ -1,4 +1,5 @@
-﻿using RuleBuilderInfra.Application.PresentationModels.RuleEngineModels;
+﻿using Microsoft.EntityFrameworkCore;
+using RuleBuilderInfra.Application.PresentationModels.RuleEngineModels;
 using RuleBuilderInfra.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RuleBuilderInfra.Application.Services.Contracts.RuleEngineer
 {
-    public interface IScanEntitiesEngineService
+    public interface IScanEntitiesEngineService<TContext> where TContext : DbContext
     {
         List<ScannableEntities> GetAllScannableEntities(string assemblyName);
         Task<List<RuleEngineProperties>> GetPropertyPairs(string assemblyName,string entityTypeCode);

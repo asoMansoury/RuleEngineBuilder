@@ -7,6 +7,7 @@ using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Application.Services.Contracts.RuleEngineer;
 using RuleBuilderInfra.Application.Services.Implementations.RuleEngineer;
 using RuleBuilderInfra.Domain.Entities;
+using RuleBuilderInfra.Persistence;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
@@ -19,12 +20,12 @@ namespace RuleBuilderInfra.WebAPI.Controllers
     [ApiController]
     public class ScannerController : Controller
     {
-        private readonly IScanEntitiesEngineService _scanEntitiesEngineService;
-        private readonly ICallingBusinessServiceMediator _callingBusinessServiceMediator;
+        private readonly IScanEntitiesEngineService<MainDatabase> _scanEntitiesEngineService;
+        private readonly ICallingBusinessServiceMediator<MainDatabase> _callingBusinessServiceMediator;
         private readonly ICategoryManagerService _assemblyManagerService;
         private readonly IRuleManagerService _ruleManagerService;
-        public ScannerController(IScanEntitiesEngineService scanEntitiesEngineService,
-                                 ICallingBusinessServiceMediator callingBusinessServiceMediator,
+        public ScannerController(IScanEntitiesEngineService<MainDatabase> scanEntitiesEngineService,
+                                 ICallingBusinessServiceMediator<MainDatabase> callingBusinessServiceMediator,
                                  ICategoryManagerService assemblyManagerService,
                                  IRuleManagerService ruleManagerService)
         {

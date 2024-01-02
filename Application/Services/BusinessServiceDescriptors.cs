@@ -1,21 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using RuleBuilderInfra.Application.PresentationModels.BuisinessEngineModels;
 using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Application.Services.Contracts.RuleEngineer;
 using RuleBuilderInfra.Domain.Entities;
+using RuleBuilderInfra.Persistence;
 using System.Reflection;
 
 namespace RuleBuilderInfra.Application.Services
 {
-    public class BusinessServiceDescriptors : ICallingBusinessServiceMediator
+    public class BusinessServiceDescriptors<TContext> : ICallingBusinessServiceMediator<TContext> where TContext : DbContext
     {
         private readonly ICategoryManagerService _assemblyManagerService;
         private readonly IRuleManagerService _ruleManagerService;
-        private readonly IScanEntitiesEngineService _scanEntitiesEngineService;
+        private readonly IScanEntitiesEngineService<TContext> _scanEntitiesEngineService;
 
         public BusinessServiceDescriptors(ICategoryManagerService assemblyManagerService,
                                             IRuleManagerService ruleManagerService,
-                                            IScanEntitiesEngineService scanEntitiesEngineService)
+                                            IScanEntitiesEngineService<TContext> scanEntitiesEngineService)
         {
             _assemblyManagerService = assemblyManagerService;
             _ruleManagerService = ruleManagerService;

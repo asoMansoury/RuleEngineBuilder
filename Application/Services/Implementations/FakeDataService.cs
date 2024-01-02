@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using RuleBuilderInfra.Application.PresentationModels;
+﻿using RuleBuilderInfra.Application.PresentationModels;
 using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Domain.Entities;
 using RuleBuilderInfra.Persistence;
@@ -11,30 +10,27 @@ namespace RuleBuilderInfra.Application.Services.Implementations
     public class FakeDataService : BaseService, IFakeDataService
     {
         private readonly IFakeDataRepository _fakeDataRepository;
-        public FakeDataService(IUnitOfWork unitOfWork, IMapper mapper, IFakeDataRepository fakeDataRepository) : base(unitOfWork,mapper)
+        public FakeDataService(IUnitOfWork unitOfWork, IFakeDataRepository fakeDataRepository) : base(unitOfWork)
         {
             this._fakeDataRepository = fakeDataRepository;
         }
 
-        public async Task<List<FakeDataModel>> GetDistencteMovieAsync()
+        public async Task<List<FakeDataEntity>> GetDistencteMovieAsync()
         {
-            var distinctedObject =await  _fakeDataRepository.GetDistinctByMovies();
-            return _mapper.Map<List<FakeDataModel>>(distinctedObject);
+            return await  _fakeDataRepository.GetDistinctByMovies();
         }
 
-        public async Task<List<FakeDataModel>> GetDistencteProvincesAsync()
+        public async Task<List<FakeDataEntity>> GetDistencteProvincesAsync()
         {
             
-            var distinctedObject =await _fakeDataRepository.GetDistinctByProvinces();
-            return _mapper.Map<List<FakeDataModel>>(distinctedObject);
+            return await _fakeDataRepository.GetDistinctByProvinces();
         }
 
-        public async Task<List<FakeDataModel>> GetDistributerByMovieOrProvinceAsync(string province, string movie)
+        public async Task<List<FakeDataEntity>> GetDistributerByMovieOrProvinceAsync(string province, string movie)
         {
             try
             {
-                var data = await _fakeDataRepository.GetDistributerByMovieOrProvinceAsync(province, movie);
-                return _mapper.Map<List<FakeDataModel>>(data);
+                return await _fakeDataRepository.GetDistributerByMovieOrProvinceAsync(province, movie);
             }
             catch (Exception ex)
             {

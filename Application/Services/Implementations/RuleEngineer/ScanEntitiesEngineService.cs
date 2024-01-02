@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using RuleBuilderInfra.Application.Mapping;
 using RuleBuilderInfra.Application.PresentationModels;
 using RuleBuilderInfra.Application.PresentationModels.RuleEngineModels;
 using RuleBuilderInfra.Application.Services.Contracts;
@@ -22,25 +22,21 @@ using System.Threading.Tasks;
 
 namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
 {
-    public class ScanEntitiesEngineService : IScanEntitiesEngineService
+    public class ScanEntitiesEngineService<TContext> : IScanEntitiesEngineService<TContext> where TContext:DbContext
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IFieldTypesService _fieldTypesService;
-        private readonly DbContext _ruleEngineContext;
-        private readonly DbContext _mainContext;
 
-        private readonly IMapper _mapper;
+        private readonly TContext _mainContext;
+
         public ScanEntitiesEngineService(IServiceProvider serviceProvider,
                                           IFieldTypesService fieldTypesService,
                                           RuleEngineContext ruleEngineContext,
-                                          MainDatabase mainDatabase,
-                                          IMapper mapper)
+                                          TContext mainDatabase)
         {
             _serviceProvider = serviceProvider;
             _fieldTypesService = fieldTypesService;
-            _mapper = mapper;
-            _ruleEngineContext = ruleEngineContext;
-            _mainContext = mainDatabase;
+            _mainContext = mainDatabase as TContext;
         }
 
         private List<Type> LoadAllAssemblies(string assemblyName)
@@ -102,8 +98,9 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
         public async Task<RuleEngineProperties> GetTypeOfPropertyName(string assemblyName, string entityTypeCode, string propertyName)
         {
             var propertyType = checkEntityScannedInstantiator(assemblyName, entityTypeCode).GetTypeOfPropertyName(propertyName);
-            var fieldTypesCodes = await _fieldTypesService.GetFieldTypesByFieldType(propertyType);
-            var result = _mapper.Map<RuleEngineProperties>(fieldTypesCodes);
+            FieldTypesEntity fieldTypesCodes = await _fieldTypesService.GetFieldTypesByFieldType(propertyType);
+            //var result = _mapper.Map<RuleEngineProperties>(fieldTypesCodes);
+            var result = ManuallMapping.Map(fieldTypesCodes);
             result.PropertyName = propertyName;
             return result;
         }

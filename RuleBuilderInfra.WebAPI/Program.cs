@@ -24,7 +24,7 @@ builder.Services.AddDbContext<MainDatabase>((options) =>
 builder.Services.AddTransient<IFakeDataRepository, FakeDataRepository>();
 
 
-builder.Services.DependencyInjectionEntityFramework(connectionString);
+builder.Services.DependencyInjectionEntityFramework<MainDatabase>(connectionString);
 
 
 builder.Services.AddTransient<IFakeDataService, FakeDataService>();
@@ -46,7 +46,6 @@ using (var scope = app.Services.CreateScope())
 {
     var categoryManagerService = scope.ServiceProvider.GetService<ICategoryManagerService>();
     categoryManagerService.RegisterNewCategoryService(typeof(BusinessApplicationTest).Assembly, "ApplicationTest");
-
 }
 
 //Seeding Database with initial data 

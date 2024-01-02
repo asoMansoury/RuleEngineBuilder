@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using RuleBuilderInfra.Application.Services.Contracts.RuleEngineer;
 using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Application.Services.Implementations.RuleEngineer;
@@ -16,7 +15,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RuleBuilderInfra.Application.Mapping;
 using RuleBuilderInfra.Persistence.Migrations;
 
 
@@ -24,14 +22,16 @@ namespace RuleBuilderInfra.Application
 {
     public static class ContainerConfiguration
     {
-        public static void DependencyInjectionEntityFramework(this IServiceCollection serviceDescriptors, string ConnectionString)
+        public static void DependencyInjectionEntityFramework<YourContext>(this IServiceCollection serviceDescriptors, string connection) where YourContext : DbContext
         {
 
+            var ruleEngineOptionsBuilder = new DbContextOptionsBuilder<RuleEngineContext>();
             serviceDescriptors.AddDbContext<RuleEngineContext>((options) =>
             {
-                options.UseSqlServer(ConnectionString);
-            }
-            );
+                options.UseSqlServer(connection);
+            });
+            serviceDescriptors.AddTransient<IScanEntitiesEngineService<YourContext>, ScanEntitiesEngineService<YourContext>>();
+            serviceDescriptors.AddTransient<ICallingBusinessServiceMediator<YourContext>, BusinessServiceDescriptors<YourContext>>();
 
             #region Repositories
             serviceDescriptors.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -41,22 +41,11 @@ namespace RuleBuilderInfra.Application
             serviceDescriptors.AddTransient<IFieldTypesRepository, FieldTypesRepository>();
             serviceDescriptors.AddTransient(typeof(IRuleBuilderEngineRepo<>), typeof(RuleBuilderEngineRepo<>));
             serviceDescriptors.AddTransient(typeof(ICheckEntityIsScanned<>), typeof(CheckEntityIsScanned<>));
-            serviceDescriptors.AddTransient<IScanEntitiesEngineService, ScanEntitiesEngineService>();
-            serviceDescriptors.AddTransient<ICallingBusinessServiceMediator, BusinessServiceDescriptors>();
+
             serviceDescriptors.AddTransient(typeof(IQueryBuilderRepositoryExternal<,>),typeof(QueryBuilderRepositoryExternal<,>));
             serviceDescriptors.AddSingleton<ICategoryManagerService, CategoryManagerService>();
             serviceDescriptors.AddTransient<IRuleEntityRepository, RuleEntityRepository>();
             serviceDescriptors.AddTransient<IRuleManagerService, RuleManagerService>();
-            #endregion
-
-            #region AutoMapper
-            var autoMapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
-
-            IMapper mapper = autoMapperConfig.CreateMapper();
-            serviceDescriptors.AddSingleton(mapper);
             #endregion
 
             #region Services

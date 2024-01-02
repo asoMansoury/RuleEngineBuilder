@@ -1,6 +1,7 @@
-﻿using AutoMapper;
+﻿
 using RuleBuilderInfra.Application.PresentationModels;
 using RuleBuilderInfra.Application.Services.Contracts;
+using RuleBuilderInfra.Domain.Entities;
 using RuleBuilderInfra.Persistence;
 using RuleBuilderInfra.Persistence.Repositories.Contracts;
 
@@ -9,34 +10,31 @@ namespace RuleBuilderInfra.Application.Services.Implementations
     public class FieldTypesService : BaseService, IFieldTypesService
     {
         private readonly IFieldTypesRepository _fieldTypesRepository;
-        public FieldTypesService(IUnitOfWork unitOfWork, IMapper mapper,IFieldTypesRepository fieldTypesRepository) : base(unitOfWork, mapper)
+        public FieldTypesService(IUnitOfWork unitOfWork,IFieldTypesRepository fieldTypesRepository) : base(unitOfWork)
         {
             this._fieldTypesRepository = fieldTypesRepository;
         }
 
-        public async Task<List<FieldTypesModel>> GetFieldTypes()
+        public async Task<List<FieldTypesEntity>> GetFieldTypes()
         {
-            return _mapper.Map<List<FieldTypesModel>>(await this._fieldTypesRepository.GetFieldTypesAsync());
+            return await this._fieldTypesRepository.GetFieldTypesAsync();
         }
 
 
 
-        public async Task<FieldTypesModel> GetFieldTypesByCode(string code)
+        public async Task<FieldTypesEntity> GetFieldTypesByCode(string code)
         {
-            var foundObj =await _fieldTypesRepository.GetFieldTypesEntityByCodeAsync(code);
-            return _mapper.Map<FieldTypesModel>(foundObj);
+            return await _fieldTypesRepository.GetFieldTypesEntityByCodeAsync(code);
         }
 
-        public async Task<List<FieldTypesModel>> GetFieldTypesByFieldType(List<string> fieldTypes)
+        public async Task<List<FieldTypesEntity>> GetFieldTypesByFieldType(List<string> fieldTypes)
         {
-            var foundObjs = await _fieldTypesRepository.GetFieldTypesByFieldType(fieldTypes);
-            return _mapper.Map<List<FieldTypesModel>>(foundObjs);
+            return await _fieldTypesRepository.GetFieldTypesByFieldType(fieldTypes);
         }
 
-        public async Task<FieldTypesModel> GetFieldTypesByFieldType(string fieldType)
+        public async Task<FieldTypesEntity> GetFieldTypesByFieldType(string fieldType)
         {
-            var foundObj =await _fieldTypesRepository.GetFieldTypesByFieldType(fieldType);
-            return _mapper.Map<FieldTypesModel>(foundObj);
+            return await _fieldTypesRepository.GetFieldTypesByFieldType(fieldType);
         }
 
     }

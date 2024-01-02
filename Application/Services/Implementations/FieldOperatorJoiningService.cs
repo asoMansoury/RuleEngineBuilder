@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using RuleBuilderInfra.Application.PresentationModels;
+﻿using RuleBuilderInfra.Application.PresentationModels;
 using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Domain.Entities;
 using RuleBuilderInfra.Persistence;
@@ -10,15 +9,14 @@ namespace RuleBuilderInfra.Application.Services.Implementations
     public class FieldOperatorJoiningService : BaseService, IFieldOperatorJoiningService
     {
         private readonly IFieldOperatorJoiningRepository _fielOperatorJoiningRepository;
-        public FieldOperatorJoiningService(IUnitOfWork unitOfWork, IMapper mapper, IFieldOperatorJoiningRepository fielOperatorJoiningRepository) : base(unitOfWork, mapper)
+        public FieldOperatorJoiningService(IUnitOfWork unitOfWork,  IFieldOperatorJoiningRepository fielOperatorJoiningRepository) : base(unitOfWork)
         {
             this._fielOperatorJoiningRepository = fielOperatorJoiningRepository;
         }
 
-        public async Task<List<FieldOperatorJoiningModel>> GetFieldOperatorByCode(string code)
+        public async Task<List<FieldOperatorJoiningEntity>> GetFieldOperatorByCode(string code)
         {
-            var entities = await _fielOperatorJoiningRepository.GetFieldOperatorByCode(code);
-            return _mapper.Map<List<FieldOperatorJoiningEntity>, List<FieldOperatorJoiningModel>>(entities);
+            return await _fielOperatorJoiningRepository.GetFieldOperatorByCode(code);
         }
     }
 }
