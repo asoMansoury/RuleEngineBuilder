@@ -8,7 +8,7 @@ namespace RuleBuilderInfra.Application.PresentationModels
 {
     public class FieldOperatorJoiningModel
     {
-        public string OperatorTypeCode { get; set; }
-        public string FieldTypeCode { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using RuleBuilderInfra.Domain.Entities;
+using RuleBuilderInfra.Persistence.BaseEntityData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,18 @@ namespace RuleBuilderInfra.Persistence
     {
         public static void SeedingDatabase(this ModelBuilder modelBuilder)
         {
-            var conditionData = CommonUtility.LoadJsonFile<List<ConditionEntity>>("Conditions.json");
-            var operatorTypesData = CommonUtility.LoadJsonFile<List<OperatorTypesEntity>>("OperatorTypes.json");
-            var FieldOperatorJoiningData = CommonUtility.LoadJsonFile<List<FieldOperatorJoiningEntity>>("FieldOperatorJoining.json");
-            var fieldTypesData = CommonUtility.LoadJsonFile<List<FieldTypesEntity>>("FieldTypes.json");
-            var fakeDataEntities = CommonUtility.LoadJsonFile<List<FakeDataEntity>>("FakeData.json");
+            var feeder = new FeederUtiltiy();
+            //var conditionData = CommonUtility.LoadJsonFile<List<ConditionEntity>>("Conditions.json");
+            //var operatorTypesData = CommonUtility.LoadJsonFile<List<OperatorTypesEntity>>("OperatorTypes.json");
+            //var FieldOperatorJoiningData = CommonUtility.LoadJsonFile<List<FieldOperatorJoiningEntity>>("FieldOperatorJoining.json");
+            //var fieldTypesData = CommonUtility.LoadJsonFile<List<FieldTypesEntity>>("FieldTypes.json");
+            //var fakeDataEntities = CommonUtility.LoadJsonFile<List<FakeDataEntity>>("FakeData.json");
+
+            var conditionData = feeder.GetConditions();
+            var operatorTypesData = feeder.GetOperatorTypesEntities();
+            var FieldOperatorJoiningData = feeder.GetFieldOperatorJoiningEntities();
+            var fieldTypesData = feeder.GetFieldTypesEntities();
+            var fakeDataEntities = feeder.GetFakeDataEntities();
 
 
 

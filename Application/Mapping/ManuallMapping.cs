@@ -26,8 +26,8 @@ namespace RuleBuilderInfra.Application.Mapping
             {
                 result.Add(new FieldOperatorJoiningModel
                 {
-                    FieldTypeCode = item.FieldTypeCode,
-                    OperatorTypeCode = item.OperatorTypeCode,
+                    Code = item.OperatorTypesEntity.OperatorTypeCode,
+                    Name = item.OperatorTypesEntity.Name,
                 });
             });
             return result;

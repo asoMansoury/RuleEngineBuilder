@@ -23,7 +23,6 @@ builder.Services.AddDbContext<MainDatabase>((options) =>
 });
 builder.Services.AddTransient<IFakeDataRepository, FakeDataRepository>();
 
-
 builder.Services.DependencyInjectionEntityFramework<MainDatabase>(connectionString);
 
 
