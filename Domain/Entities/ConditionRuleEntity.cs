@@ -10,8 +10,10 @@ namespace RuleBuilderInfra.Domain.Entities
         public String Operator { get; set; }
         public String Value { get; set; }
         [JsonIgnore]
-        public int? ParentId { get; set; }
+
         public String? ConditionCode { get; set; }
+        public int? ParentId { get; set; }
+        public ConditionRuleEntity Parent { get; set; }
         public List<ConditionRuleEntity>? conditions { get; set; }
     }
 }

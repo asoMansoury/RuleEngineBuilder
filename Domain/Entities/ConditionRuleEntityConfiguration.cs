@@ -10,6 +10,11 @@ namespace RuleBuilderInfra.Domain.Entities
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
                 .IsRequired();
+
+            builder.HasOne((c => c.Parent))
+                .WithMany(c => c.conditions)
+                .HasForeignKey(c => c.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
