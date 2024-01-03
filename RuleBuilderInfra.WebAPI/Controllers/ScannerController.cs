@@ -111,7 +111,6 @@ namespace RuleBuilderInfra.WebAPI.Controllers
         public async Task<IActionResult> GetRules()
         {
             var rules = await _ruleManagerService.GetAllRulesAsync();
-            var data = await this._scanEntitiesEngineService.GenerateQueryBuilder(rules.LastOrDefault());
             return Ok(rules);
         }
 

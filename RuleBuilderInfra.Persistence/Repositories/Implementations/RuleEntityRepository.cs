@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Newtonsoft.Json;
 using RuleBuilderInfra.Domain.Entities;
 using RuleBuilderInfra.Persistence.Repositories.Contracts;
@@ -26,13 +27,31 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
 
         public async Task<List<RuleEntity>> GetAllAsync()
         {
-            var entities = _dbContext.ruleEntities.ToList().ToList();
+            var entities = _dbContext.ruleEntities.Include(item => item.ConditionRulesEntity).ToList();
+            entities.ForEach(item =>
+            {
+                item.Conditions = item.ConditionRulesEntity.Select(item => new ConditionRuleEntity
+                {
+                    ConditionCode = item.ConditionCode,
+                    Id = item.Id,
+                    Conditions = item.Conditions,
+                    Operator = item.Operator,
+                    Parent = item.Parent,
+                    ParentId = item.ParentId,
+                    PropertyName = item.PropertyName,
+                    Value = item.Value
+                }).ToList();
+            });
             return entities;
         }
 
         public async Task<RuleEntity> GetRuleEntityByIdAsync(int id)
         {
-            return _dbContext.ruleEntities.SingleOrDefault(z => z.Id == id)!;
+            var entity = _dbContext.ruleEntities.Include(item => item.ConditionRulesEntity).SingleOrDefault(z => z.Id == id)!;
+            entity.Conditions = entity.ConditionRulesEntity;
+            return _dbContext.ruleEntities.Include(item => item.ConditionRulesEntity).SingleOrDefault(z => z.Id == id)!;
         }
     }
 }
+
+

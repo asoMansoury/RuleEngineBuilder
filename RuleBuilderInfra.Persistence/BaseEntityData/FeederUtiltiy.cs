@@ -117,16 +117,16 @@ namespace RuleBuilderInfra.Persistence.BaseEntityData
                 OperatorTypeCode = "NEq",
                 FieldTypeCode = "ST"
             });
-            entities.Add(new FieldOperatorJoiningEntity
-            {
-                OperatorTypeCode = "Stw",
-                FieldTypeCode = "ST"
-            });
-            entities.Add(new FieldOperatorJoiningEntity
-            {
-                OperatorTypeCode = "Cte",
-                FieldTypeCode = "ST"
-            });
+            //entities.Add(new FieldOperatorJoiningEntity
+            //{
+            //    OperatorTypeCode = "Stw",
+            //    FieldTypeCode = "ST"
+            //});
+            //entities.Add(new FieldOperatorJoiningEntity
+            //{
+            //    OperatorTypeCode = "Cte",
+            //    FieldTypeCode = "ST"
+            //});
             return entities;
         }
 

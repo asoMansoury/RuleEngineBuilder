@@ -12,9 +12,14 @@ namespace RuleBuilderInfra.Domain.Entities
                 .IsRequired();
 
             builder.HasOne((c => c.Parent))
-                .WithMany(c => c.conditions)
+                .WithMany(c => c.Conditions)
                 .HasForeignKey(c => c.ParentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne((ruleEntity) => ruleEntity.RuleEntity)
+                    .WithMany((ruleEntities) => ruleEntities.ConditionRulesEntity)
+                    .HasForeignKey((ruleEntityItem) => ruleEntityItem.RuleEntityId);
+
         }
     }
 }

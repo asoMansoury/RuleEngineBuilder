@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RuleBuilderInfra.Persistence.Migrations;
+using Microsoft.EntityFrameworkCore.SqlServer.Update.Internal;
 
 
 namespace RuleBuilderInfra.Application
@@ -42,9 +42,17 @@ namespace RuleBuilderInfra.Application
             serviceDescriptors.AddTransient(typeof(IRuleBuilderEngineRepo<>), typeof(RuleBuilderEngineRepo<>));
             serviceDescriptors.AddTransient(typeof(ICheckEntityIsScanned<>), typeof(CheckEntityIsScanned<>));
 
-            serviceDescriptors.AddTransient(typeof(IQueryBuilderRepositoryExternal<,>),typeof(QueryBuilderRepositoryExternal<,>));
+            serviceDescriptors.AddTransient(typeof(IQueryBuilderRepositoryExternal<,>), typeof(QueryBuilderRepositoryExternal<,>));
             serviceDescriptors.AddSingleton<ICategoryManagerService, CategoryManagerService>();
             serviceDescriptors.AddTransient<IRuleEntityRepository, RuleEntityRepository>();
+            serviceDescriptors.AddTransient<IConditionRuleEntityRepository, ConditionRuleEntityRepository>();
+            serviceDescriptors.AddTransient<IActionEntityRepository, ActionEntityRepository>();
+            serviceDescriptors.AddTransient<IActionPropertiesEntityRepository, ActionPropertiesEntityRepository>();
+
+            serviceDescriptors.AddTransient<IActionRuleEntityRepository, ActionRuleEntityRepository>();
+            serviceDescriptors.AddTransient<IActionRulePropertiesEntityRepository, ActionRulePropertiesEntityRepository>();
+
+            serviceDescriptors.AddTransient<IActionService, ActionService>();
             serviceDescriptors.AddTransient<IRuleManagerService, RuleManagerService>();
             #endregion
 
@@ -57,11 +65,11 @@ namespace RuleBuilderInfra.Application
 
             using (var scope = serviceDescriptors.BuildServiceProvider().CreateScope())
             {
-                var services = scope.ServiceProvider;
-                var dbContext = services.GetRequiredService<RuleEngineContext>();
-                var migrationsAssembly = typeof(InitialMigration).Assembly;
-                dbContext.Database.Migrate();
-                dbContext.SaveChanges();
+                //var services = scope.ServiceProvider;
+                //var dbContext = services.GetRequiredService<RuleEngineContext>();
+                //var migrationsAssembly = typeof(InitialMigration).Assembly;
+                //dbContext.Database.Migrate();
+                //dbContext.SaveChanges();
             }
 
         }

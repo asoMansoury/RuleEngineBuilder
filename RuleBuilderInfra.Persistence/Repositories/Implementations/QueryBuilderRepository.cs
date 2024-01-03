@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RuleBuilderInfra.Persistence.Repositories.Contracts;
+using System.Linq;
 
 namespace RuleBuilderInfra.Persistence.Repositories.Implementations
 {
@@ -14,7 +15,16 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
 
         public List<T> GetDataGenericBuilder(Func<T, bool> predicate)
         {
-            return _dbContext.Set<T>().Where(predicate).ToList();
+            try
+            {
+                return _dbContext.Set<T>().Where(predicate).ToList();
+                
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }

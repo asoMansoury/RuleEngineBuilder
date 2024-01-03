@@ -38,7 +38,42 @@ namespace RuleBuilderInfra.Persistence
             return Expression.Lambda<Func<T, bool>>(body, param);
         }
 
-        public static BinaryExpression CreateEqualBinaryExpression<T>(string propertyName, object value, Type typeValue)
+        public static BinaryExpression CreateEqualBinaryExpressionString<T>(string propertyName, object value, Type typeValue)
+        {
+            var param = Expression.Parameter(typeof(T), "P");
+
+            var member = Expression.Property(param, propertyName);
+
+            var constant = Expression.Constant(value, typeValue);
+
+            return Expression.Equal(methodCallExpressionForString(member), constant);
+        }
+
+        public static BinaryExpression NotEqualBinaryExpressionString<T>(string propertyName, object value, Type typeValue)
+        {
+            var param = Expression.Parameter(typeof(T), "P");
+
+            var member = Expression.Property(param, propertyName);
+
+            var constant = Expression.Constant(value, typeValue);
+
+            var body = Expression.NotEqual(methodCallExpressionForString(member), constant);
+
+            return body;
+        }
+
+        private static MethodCallExpression methodCallExpressionForString(MemberExpression member)
+        {
+
+            var toLowerMethod = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
+            var TrimMethod = typeof(string).GetMethod("Trim", Type.EmptyTypes);
+
+            var memberAfterToLower = Expression.Call(member, toLowerMethod);
+            var memberAfterTrim = Expression.Call(memberAfterToLower, TrimMethod);
+            return memberAfterTrim;
+        }
+
+        public static BinaryExpression CreateEqualBinaryExpressionForInt<T>(string propertyName, object value, Type typeValue)
         {
             var param = Expression.Parameter(typeof(T), "P");
 
@@ -48,6 +83,7 @@ namespace RuleBuilderInfra.Persistence
 
             return Expression.Equal(member, constant);
         }
+
 
         public static Expression<Func<T, bool>> NotEqualExpression<T>(string propertyName, object value)
         {

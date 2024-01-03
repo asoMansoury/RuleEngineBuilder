@@ -32,5 +32,25 @@ namespace RuleBuilderInfra.Application.Mapping
             });
             return result;
         }
+
+        public static List<BusinessServiceModel> Map(List<ActionEntity> items)
+        {
+            var result = new List<BusinessServiceModel>();
+            items.ForEach((item) => {
+                result.Add(new BusinessServiceModel
+                {
+                    CategoryService = item.CategoryService,
+                    ServiceAssembly = item.ServiceAssembly,
+                    ServiceName = item.ServiceName,
+                    InputParams = item.ActionPropertis.ConvertAll(x=> new BuisinessServicePropertis
+                    {
+                        PropertyName = x.PropertyName,
+                        PropertyType = x.PropertyType,
+                    })
+                });
+            });
+            return result;
+        }
+
     }
 }

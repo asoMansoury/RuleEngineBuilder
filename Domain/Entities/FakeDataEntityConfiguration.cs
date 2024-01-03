@@ -11,6 +11,7 @@ namespace RuleBuilderInfra.Domain.Entities
             builder.Property(x => x.Id)
                 .IsRequired()
                 .ValueGeneratedOnAdd();
+
         }
     }
 }

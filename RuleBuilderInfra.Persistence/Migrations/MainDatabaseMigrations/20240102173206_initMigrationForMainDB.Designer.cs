@@ -11,8 +11,8 @@ using RuleBuilderInfra.Persistence;
 namespace RuleBuilderInfra.Persistence.Migrations.MainDatabaseMigrations
 {
     [DbContext(typeof(MainDatabase))]
-    [Migration("20231221203104_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240102173206_initMigrationForMainDB")]
+    partial class initMigrationForMainDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,34 +73,27 @@ namespace RuleBuilderInfra.Persistence.Migrations.MainDatabaseMigrations
                         new
                         {
                             Id = 4,
-                            Distributer = "Paramond",
-                            Movie = "Spider",
-                            Province = "Ontario"
-                        },
-                        new
-                        {
-                            Id = 5,
                             Distributer = "Lionsgate",
                             Movie = "SpiderMan",
                             Province = "Ontario"
                         },
                         new
                         {
-                            Id = 6,
+                            Id = 5,
                             Distributer = "Lionsgate",
                             Movie = "The Notebook",
                             Province = "Quebec"
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 6,
                             Distributer = "Disney",
                             Movie = "Notebook",
                             Province = "Quebec"
                         },
                         new
                         {
-                            Id = 8,
+                            Id = 7,
                             Distributer = "Disney",
                             Movie = "Sinderella",
                             Province = "Quebec"

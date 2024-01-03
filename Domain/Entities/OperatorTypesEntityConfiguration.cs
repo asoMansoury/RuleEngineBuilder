@@ -16,7 +16,6 @@ namespace RuleBuilderInfra.Domain.Entities
             builder.HasMany(item => item.FieldOperatorJoiningEntities)
                    .WithOne(operatorJoiningEntity => operatorJoiningEntity.OperatorTypesEntity)
                    .HasForeignKey(operatorJoiningEntity => operatorJoiningEntity.OperatorTypeCode);
-
         }
     }
 }

@@ -3,6 +3,7 @@ using RuleBuilderInfra.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,8 +17,10 @@ namespace RuleBuilderInfra.Persistence
         public DbSet<FieldTypesEntity> fieldTypesEntities { get; set; }
         public DbSet<OperatorTypesEntity> operatorTypesEntities { get; set; }
 
-
+        public DbSet<ConditionRuleEntity> ConditionRuleEntities { get; set; }
         public DbSet<RuleEntity> ruleEntities { get; set; }
+        public DbSet<ActionEntity> actionEntities { get; set; }
+        public DbSet<ActionPropertiesEntity> actionPropertisEntities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,9 +29,14 @@ namespace RuleBuilderInfra.Persistence
             modelBuilder.ApplyConfiguration(new FieldTypesEntityConfiguration());
             modelBuilder.ApplyConfiguration(new OperatorTypesEntityConfiguration());
             modelBuilder.ApplyConfiguration(new RuleEntityConfiguration());
-            modelBuilder.Ignore<ConditionRuleEntity>();
+            modelBuilder.ApplyConfiguration(new ConditionRuleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ActionEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ActionPropertiesEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ActionRuleEntityConfiguration());
             modelBuilder.SeedingDatabase();
             base.OnModelCreating(modelBuilder);
+
+
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
@@ -64,6 +72,7 @@ namespace RuleBuilderInfra.Persistence
             {
                 modelBuilder.Entity<ProvincesEntity>().HasData(provinceEntity);
             });
+
             base.OnModelCreating(modelBuilder);
         }
 

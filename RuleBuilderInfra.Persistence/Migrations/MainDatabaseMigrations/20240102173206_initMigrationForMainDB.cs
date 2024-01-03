@@ -7,7 +7,7 @@
 namespace RuleBuilderInfra.Persistence.Migrations.MainDatabaseMigrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class initMigrationForMainDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,11 +49,10 @@ namespace RuleBuilderInfra.Persistence.Migrations.MainDatabaseMigrations
                     { 1, "Paramond", "Spider", "Ontario" },
                     { 2, "Paramond", "Sinderella", "Quebec" },
                     { 3, "Disney", "The Notebook", "Calgary" },
-                    { 4, "Paramond", "Spider", "Ontario" },
-                    { 5, "Lionsgate", "SpiderMan", "Ontario" },
-                    { 6, "Lionsgate", "The Notebook", "Quebec" },
-                    { 7, "Disney", "Notebook", "Quebec" },
-                    { 8, "Disney", "Sinderella", "Quebec" }
+                    { 4, "Lionsgate", "SpiderMan", "Ontario" },
+                    { 5, "Lionsgate", "The Notebook", "Quebec" },
+                    { 6, "Disney", "Notebook", "Quebec" },
+                    { 7, "Disney", "Sinderella", "Quebec" }
                 });
 
             migrationBuilder.InsertData(

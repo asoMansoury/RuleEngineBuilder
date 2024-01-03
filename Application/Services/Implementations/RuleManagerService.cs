@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using RuleBuilderInfra.Application.Services.Contracts;
 using RuleBuilderInfra.Domain.Entities;
 using RuleBuilderInfra.Persistence;
@@ -15,15 +16,42 @@ namespace RuleBuilderInfra.Application.Services.Implementations
     public class RuleManagerService : BaseService, IRuleManagerService
     {
         private readonly IRuleEntityRepository _ruleEntityRepository;
-        public RuleManagerService(IUnitOfWork unitOfWork, 
-                                  IRuleEntityRepository ruleEntityRepository) : base(unitOfWork)
+        private readonly IConditionRuleEntityRepository _conditionRuleEntityRepository;
+        private readonly IActionEntityRepository _actionEntityRepository;
+        private readonly ICategoryManagerService _categoryManagerService;
+        private readonly IActionRuleEntityRepository _actionRuleEntityRepository;
+        private readonly IActionRulePropertiesEntityRepository _actionRulePropertiesEntityRepository;
+        public RuleManagerService(IUnitOfWork unitOfWork,
+                                  IRuleEntityRepository ruleEntityRepository,
+                                  IConditionRuleEntityRepository conditionRuleEntityRepository,
+                                  ICategoryManagerService categoryManagerService,
+                                  IActionEntityRepository actionEntityRepository,
+                                  IActionRulePropertiesEntityRepository actionRulePropertiesEntityRepository,
+                                  IActionRuleEntityRepository actionRuleEntityRepository) : base(unitOfWork)
         {
-            _ruleEntityRepository = ruleEntityRepository;   
+            this._ruleEntityRepository = ruleEntityRepository;
+            this._conditionRuleEntityRepository = conditionRuleEntityRepository;
+            this._categoryManagerService = categoryManagerService;
+            this._actionEntityRepository = actionEntityRepository;
+            this._actionRuleEntityRepository = actionRuleEntityRepository;
+            this._actionRulePropertiesEntityRepository = actionRulePropertiesEntityRepository;
         }
 
         public async Task AddNewRuleAsync(RuleEntity ruleEntity)
         {
-            var entity = _ruleEntityRepository.AddAsync(ruleEntity);
+            var actionEntity = await _actionEntityRepository.GetActionEntityByName(ruleEntity.ServiceName);
+            var actionRuleEntity =this._actionRuleEntityRepository.AddActionRuleEntity(ruleEntity, actionEntity);
+
+            Type inputBusinessModel = _categoryManagerService.GetInuptBusiness(actionEntity.CategoryService, actionEntity.ServiceName);
+            var inputModel = JsonConvert.DeserializeObject(ruleEntity.JsonValue, inputBusinessModel);
+            foreach (var actionProperty in actionEntity.ActionPropertis)
+            {
+                var value = inputModel.GetType().GetProperty(actionProperty.PropertyName);
+                _actionRulePropertiesEntityRepository.AddActionRuleEntity(ruleEntity, actionProperty, value.GetValue(inputModel).ToString());
+            }
+
+            var entity = await _ruleEntityRepository.AddAsync(ruleEntity);
+            ruleEntity.ConditionRulesEntity = entity.Conditions;
             _unitOfWork.CommitToDatabase();
         }
 
@@ -43,4 +71,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations
             return await _ruleEntityRepository.GetRuleEntityByIdAsync(id);
         }
     }
+
+
+
 }

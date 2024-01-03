@@ -45,6 +45,9 @@ using (var scope = app.Services.CreateScope())
 {
     var categoryManagerService = scope.ServiceProvider.GetService<ICategoryManagerService>();
     categoryManagerService.RegisterNewCategoryService(typeof(BusinessApplicationTest).Assembly, "ApplicationTest");
+
+    var actionService = scope.ServiceProvider.GetService<IActionService>();
+    await actionService.InsertScannedActions();
 }
 
 //Seeding Database with initial data 

@@ -12,7 +12,7 @@ namespace RuleBuilderInfra.Domain.Entities
 
     public class RuleEntity
     {
-        public int Id { get; set; }
+        public Int64 Id { get; set; }
         public String EntityCode { get; set; }
         public String EntityCategoryCode { get; set; }
 
@@ -50,29 +50,18 @@ namespace RuleBuilderInfra.Domain.Entities
         public String ServiceName { get; set; }
 
         [NotMapped]
-        public List<ConditionRuleEntity> Conditions
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(ConditionJson))
-                    return null;
-                return JsonSerializer.Deserialize<List<ConditionRuleEntity>>(ConditionJson);
-            }
-            set
-            {
-                if (value == null)
-                {
-                    ConditionJson = null;
-                }
-                else
-                {
-                    ConditionJson = JsonSerializer.Serialize(value);
-                }
-            }
-        }
+        public List<ConditionRuleEntity> Conditions { get; set; }
 
         [JsonIgnore]
-        public String ConditionJson { get; set; }
+        public List<ConditionRuleEntity>? ConditionRulesEntity { get; set; }
+
+
+        [JsonIgnore]
+        public List<ActionRuleEntity>? actionRuleEntities { get; set; }
+
+        [JsonIgnore]
+        public List<ActionRulePropertiesEntity>? actionRulePropertiesEntities { get;set; }
+
     }
 
     public class RunningSavedRule

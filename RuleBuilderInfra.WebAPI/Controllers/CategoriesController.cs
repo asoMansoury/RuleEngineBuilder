@@ -21,9 +21,11 @@ namespace RuleBuilderInfra.WebAPI.Controllers
     {
 
         private readonly ICategoryManagerService _assemblyManagerService;
-        public CategoriesController(ICategoryManagerService assemblyManagerService)
+        private readonly IActionService _actionService;
+        public CategoriesController(ICategoryManagerService assemblyManagerService, IActionService actionService)
         {
             _assemblyManagerService = assemblyManagerService;
+            _actionService = actionService;
            
         }
 
@@ -37,8 +39,8 @@ namespace RuleBuilderInfra.WebAPI.Controllers
         [HttpGet(nameof(GetBusinessServices))]
         public async Task<IActionResult> GetBusinessServices(CancellationToken cancellationToken)
         {
-            
-            return Ok(_assemblyManagerService.GetBusinessServices());
+            var result =await _actionService.GetActions();
+            return Ok(result);
         }
 
         [HttpGet(nameof(GetServiceInputProperties))]

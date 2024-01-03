@@ -81,8 +81,8 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations.RuleEngine
 
             foreach (var item in conditionRuleEntities)
             {
-                if (item.conditions != null && item.conditions.Count > 0)
-                    FillingQueueWithQueries(item.conditions, item.Id);
+                if (item.Conditions != null && item.Conditions.Count > 0)
+                    FillingQueueWithQueries(item.Conditions, item.Id);
                 item.ParentId = parentId == 0 ? null : parentId;
                 Expression query = null;
                 var fieldTypeCode = GetPropertyTypeByName(item.PropertyName);
@@ -94,18 +94,18 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations.RuleEngine
                 if (fieldTypeCode == "ST")
                 {
                     if (item.Operator == "Eq")
-                        query = ExpressionDynamicBuilder.CreateEqualBinaryExpression<T>(item.PropertyName, item.Value, fieldTypeOf);
+                        query = ExpressionDynamicBuilder.CreateEqualBinaryExpressionString<T>(item.PropertyName, item.Value.ToLower().Trim(), fieldTypeOf);
                     else if (item.Operator == "NEq")
-                        query = ExpressionDynamicBuilder.NotEqualBinaryExpression<T>(item.PropertyName, item.Value, fieldTypeOf);
+                        query = ExpressionDynamicBuilder.NotEqualBinaryExpressionString<T>(item.PropertyName, item.Value.ToLower().Trim(), fieldTypeOf);
                     else if (item.Operator == "Stw")
-                        query = ExpressionDynamicBuilder.StartsWithExpression<T>(item.PropertyName, item.Value, fieldTypeOf);
+                        query = ExpressionDynamicBuilder.StartsWithExpression<T>(item.PropertyName, item.Value.ToLower().Trim(), fieldTypeOf);
                     else if (item.Operator == "Cte")
-                        query = ExpressionDynamicBuilder.ContainsExpression<T>(item.PropertyName, item.Value, fieldTypeOf);
+                        query = ExpressionDynamicBuilder.ContainsExpression<T>(item.PropertyName, item.Value.ToLower().Trim(), fieldTypeOf);
                 }
                 else if (fieldTypeCode == "Int32" || fieldTypeCode == "Int64")
                 {
                     if (item.Operator == "Eq")
-                        query = ExpressionDynamicBuilder.CreateEqualBinaryExpression<T>(item.PropertyName, item.Value, fieldTypeOf);
+                        query = ExpressionDynamicBuilder.CreateEqualBinaryExpressionForInt<T>(item.PropertyName, item.Value, fieldTypeOf);
                     else if (item.Operator == "NEq")
                         query = ExpressionDynamicBuilder.NotEqualBinaryExpression<T>(item.PropertyName, item.Value, fieldTypeOf);
                     else if (item.Operator == "Gt")
