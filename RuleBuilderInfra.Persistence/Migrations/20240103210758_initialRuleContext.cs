@@ -92,7 +92,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     EntityCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EntityCategoryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RuleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JsonValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryService = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ServiceName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -151,12 +150,13 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 name: "ActionRuleEntity",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RuleEntityID = table.Column<long>(type: "bigint", nullable: false),
                     ActionEntityID = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActionRuleEntity", x => new { x.RuleEntityID, x.ActionEntityID });
+                    table.PrimaryKey("PK_ActionRuleEntity", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ActionRuleEntity_actionEntities_ActionEntityID",
                         column: x => x.ActionEntityID,
@@ -206,22 +206,21 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RuleEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    ActionRuleEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ActionPropertyEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ActionRulePropertiesEntity", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_ActionRulePropertiesEntity_ActionRuleEntity_ActionRuleEntityId",
+                        column: x => x.ActionRuleEntityId,
+                        principalTable: "ActionRuleEntity",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_ActionRulePropertiesEntity_actionPropertisEntities_ActionPropertyEntityId",
                         column: x => x.ActionPropertyEntityId,
                         principalTable: "actionPropertisEntities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ActionRulePropertiesEntity_ruleEntities_RuleEntityId",
-                        column: x => x.RuleEntityId,
-                        principalTable: "ruleEntities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -300,14 +299,19 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 column: "ActionEntityID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ActionRuleEntity_RuleEntityID",
+                table: "ActionRuleEntity",
+                column: "RuleEntityID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ActionRulePropertiesEntity_ActionPropertyEntityId",
                 table: "ActionRulePropertiesEntity",
                 column: "ActionPropertyEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActionRulePropertiesEntity_RuleEntityId",
+                name: "IX_ActionRulePropertiesEntity_ActionRuleEntityId",
                 table: "ActionRulePropertiesEntity",
-                column: "RuleEntityId");
+                column: "ActionRuleEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ConditionRuleEntities_ParentId",
@@ -335,9 +339,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ActionRuleEntity");
-
-            migrationBuilder.DropTable(
                 name: "ActionRulePropertiesEntity");
 
             migrationBuilder.DropTable(
@@ -353,16 +354,19 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 name: "fieldOperatorJoiningEntities");
 
             migrationBuilder.DropTable(
-                name: "actionPropertisEntities");
+                name: "ActionRuleEntity");
 
             migrationBuilder.DropTable(
-                name: "ruleEntities");
+                name: "actionPropertisEntities");
 
             migrationBuilder.DropTable(
                 name: "fieldTypesEntities");
 
             migrationBuilder.DropTable(
                 name: "operatorTypesEntities");
+
+            migrationBuilder.DropTable(
+                name: "ruleEntities");
 
             migrationBuilder.DropTable(
                 name: "actionEntities");

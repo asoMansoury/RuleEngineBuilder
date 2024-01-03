@@ -12,6 +12,10 @@ namespace RuleBuilderInfra.Domain.Entities
             builder.HasOne((parent) => parent.ActionEntity)
                 .WithMany((parent) => parent.ActionPropertis)
                 .HasForeignKey(foreign => foreign.ActionEntityID);
+
+            builder.HasMany((condtion) => condtion.actionRulePropertiesEntities)
+                .WithOne((ruleItem) => ruleItem.ActionPropertyEntity)
+                .HasForeignKey((foreignKey) => foreignKey.ActionPropertyEntityId);
         }
     }
 }

@@ -15,5 +15,6 @@ namespace RuleBuilderInfra.Domain.Entities
         [JsonIgnore]
         public List<ActionRulePropertiesEntity>? actionRulePropertiesEntities { get; set; }
 
+
     }
 }

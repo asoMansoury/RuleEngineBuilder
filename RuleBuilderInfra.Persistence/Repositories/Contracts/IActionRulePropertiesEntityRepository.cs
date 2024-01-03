@@ -4,6 +4,6 @@ namespace RuleBuilderInfra.Persistence.Repositories.Contracts
 {
     public interface IActionRulePropertiesEntityRepository
     {
-        Task<ActionRulePropertiesEntity> AddActionRuleEntity(RuleEntity RuleEntity, ActionPropertiesEntity Property,string value);
+        Task<ActionRulePropertiesEntity> AddActionRuleEntity(ActionRuleEntity ActionRuleEntity, ActionPropertiesEntity Property,string value);
     }
 }

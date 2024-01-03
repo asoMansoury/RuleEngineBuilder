@@ -18,10 +18,10 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
             return entity;
         }
 
-        public async Task<ActionRulePropertiesEntity> AddActionRuleEntity(RuleEntity RuleEntity, ActionPropertiesEntity Property, string value)
+        public async Task<ActionRulePropertiesEntity> AddActionRuleEntity(ActionRuleEntity ActionRuleEntity, ActionPropertiesEntity Property, string value)
         {
             ActionRulePropertiesEntity entity = new ActionRulePropertiesEntity();
-            entity.RuleEntity = RuleEntity;
+            entity.ActionRuleEntity = ActionRuleEntity;
             entity.ActionPropertyEntity = Property;
             entity.Value = value;
             _dbContext.Set<ActionRulePropertiesEntity>().AddAsync(entity);

@@ -81,15 +81,21 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ActionRuleEntity", b =>
                 {
-                    b.Property<long>("RuleEntityID")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("ActionEntityID")
                         .HasColumnType("bigint");
 
-                    b.HasKey("RuleEntityID", "ActionEntityID");
+                    b.Property<long>("RuleEntityID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ActionEntityID");
+
+                    b.HasIndex("RuleEntityID");
 
                     b.ToTable("ActionRuleEntity");
                 });
@@ -103,8 +109,8 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     b.Property<long>("ActionPropertyEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RuleEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ActionRuleEntityId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -114,7 +120,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
                     b.HasIndex("ActionPropertyEntityId");
 
-                    b.HasIndex("RuleEntityId");
+                    b.HasIndex("ActionRuleEntityId");
 
                     b.ToTable("ActionRulePropertiesEntity");
                 });
@@ -442,10 +448,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("JsonValue")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("JsonValue");
-
                     b.Property<string>("RuleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -497,15 +499,15 @@ namespace RuleBuilderInfra.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RuleBuilderInfra.Domain.Entities.RuleEntity", "RuleEntity")
+                    b.HasOne("RuleBuilderInfra.Domain.Entities.ActionRuleEntity", "ActionRuleEntity")
                         .WithMany("actionRulePropertiesEntities")
-                        .HasForeignKey("RuleEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("ActionRuleEntityId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("ActionPropertyEntity");
 
-                    b.Navigation("RuleEntity");
+                    b.Navigation("ActionRuleEntity");
                 });
 
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ConditionRuleEntity", b =>
@@ -555,6 +557,11 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     b.Navigation("actionRulePropertiesEntities");
                 });
 
+            modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ActionRuleEntity", b =>
+                {
+                    b.Navigation("actionRulePropertiesEntities");
+                });
+
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ConditionRuleEntity", b =>
                 {
                     b.Navigation("Conditions");
@@ -575,8 +582,6 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     b.Navigation("ConditionRulesEntity");
 
                     b.Navigation("actionRuleEntities");
-
-                    b.Navigation("actionRulePropertiesEntities");
                 });
 #pragma warning restore 612, 618
         }

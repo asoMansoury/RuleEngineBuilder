@@ -42,6 +42,7 @@ namespace RuleBuilderInfra.Domain.Entities
             }
         }
 
+        [NotMapped]
         [JsonIgnore]
         [Column("JsonValue")]
         public String? JsonValue { get; set; }
@@ -56,11 +57,10 @@ namespace RuleBuilderInfra.Domain.Entities
         public List<ConditionRuleEntity>? ConditionRulesEntity { get; set; }
 
 
+
         [JsonIgnore]
         public List<ActionRuleEntity>? actionRuleEntities { get; set; }
 
-        [JsonIgnore]
-        public List<ActionRulePropertiesEntity>? actionRulePropertiesEntities { get;set; }
 
     }
 

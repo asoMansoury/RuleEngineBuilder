@@ -14,11 +14,9 @@ namespace RuleBuilderInfra.Domain.Entities
         public string Value { get; set; }
 
 
-        public Int64 RuleEntityId { get; set; }
+        public Guid ActionRuleEntityId { get; set; }
         [JsonIgnore]
-        public RuleEntity RuleEntity { get; set; }
-
-
+        public ActionRuleEntity ActionRuleEntity { get; set; }
 
         public Int64 ActionPropertyEntityId { get; set; }
         [JsonIgnore]

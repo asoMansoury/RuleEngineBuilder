@@ -9,14 +9,14 @@ namespace RuleBuilderInfra.Domain.Entities
         {
             builder.HasKey(e => new { e.Id });
 
-            builder.HasOne((parent) => parent.RuleEntity)
+            builder.HasOne((parent) => parent.ActionRuleEntity)
                 .WithMany((parent) => parent.actionRulePropertiesEntities)
-                .HasForeignKey(foreign => foreign.RuleEntityId);
-
+                .HasForeignKey(foreign => foreign.ActionRuleEntityId);
 
             builder.HasOne((parent) => parent.ActionPropertyEntity)
                 .WithMany((parent) => parent.actionRulePropertiesEntities)
                 .HasForeignKey(foreign => foreign.ActionPropertyEntityId);
+
 
         }
     }

@@ -67,14 +67,6 @@ namespace RuleBuilderInfra.WebAPI.Controllers
         }
 
 
-        [HttpPost(nameof(ExecuteMethod))]
-        public async Task<IActionResult> ExecuteMethod([FromBody] RuleEntity ruleEntity)
-        {
-            var data = await this._scanEntitiesEngineService.GenerateQueryBuilder(ruleEntity);
-            _callingBusinessServiceMediator.InvokeAsync(ruleEntity.CategoryService, ruleEntity.ServiceName, JsonConvert.SerializeObject(data), ruleEntity.Value.ToString());
-            return Ok(data);
-        }
-
 
         [HttpPost(nameof(ExecuteMethodByRuleEntityID))]
         public async Task<IActionResult> ExecuteMethodByRuleEntityID([FromBody] RunningSavedRule ruleEntity)

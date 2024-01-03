@@ -40,14 +40,14 @@ namespace RuleBuilderInfra.Application.Services.Implementations
         public async Task AddNewRuleAsync(RuleEntity ruleEntity)
         {
             var actionEntity = await _actionEntityRepository.GetActionEntityByName(ruleEntity.ServiceName);
-            var actionRuleEntity =this._actionRuleEntityRepository.AddActionRuleEntity(ruleEntity, actionEntity);
+            var actionRuleEntity = await this._actionRuleEntityRepository.AddActionRuleEntity(ruleEntity, actionEntity);
 
             Type inputBusinessModel = _categoryManagerService.GetInuptBusiness(actionEntity.CategoryService, actionEntity.ServiceName);
-            var inputModel = JsonConvert.DeserializeObject(ruleEntity.JsonValue, inputBusinessModel);
+            var inputModel = JsonConvert.DeserializeObject(ruleEntity.JsonValue, inputBusinessModel);            
             foreach (var actionProperty in actionEntity.ActionPropertis)
             {
                 var value = inputModel.GetType().GetProperty(actionProperty.PropertyName);
-                _actionRulePropertiesEntityRepository.AddActionRuleEntity(ruleEntity, actionProperty, value.GetValue(inputModel).ToString());
+                _actionRulePropertiesEntityRepository.AddActionRuleEntity(actionRuleEntity, actionProperty, value.GetValue(inputModel).ToString());
             }
 
             var entity = await _ruleEntityRepository.AddAsync(ruleEntity);

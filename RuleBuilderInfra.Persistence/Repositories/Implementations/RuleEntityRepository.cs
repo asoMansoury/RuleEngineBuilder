@@ -47,9 +47,17 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
 
         public async Task<RuleEntity> GetRuleEntityByIdAsync(int id)
         {
-            var entity = _dbContext.ruleEntities.Include(item => item.ConditionRulesEntity).SingleOrDefault(z => z.Id == id)!;
+            var entity = _dbContext.ruleEntities
+                        .Include(item => item.ConditionRulesEntity)
+
+                        .Include(item => item.actionRuleEntities)
+                                .ThenInclude(actionEntity => actionEntity.actionRulePropertiesEntities)
+                                .ThenInclude(actionEntity => actionEntity.ActionPropertyEntity)
+                                .ThenInclude(actionEntity => actionEntity.ActionEntity)
+
+                        .SingleOrDefault(z => z.Id == id)!;
             entity.Conditions = entity.ConditionRulesEntity;
-            return _dbContext.ruleEntities.Include(item => item.ConditionRulesEntity).SingleOrDefault(z => z.Id == id)!;
+            return entity;
         }
     }
 }

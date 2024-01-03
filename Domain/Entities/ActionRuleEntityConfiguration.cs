@@ -7,7 +7,7 @@ namespace RuleBuilderInfra.Domain.Entities
     {
         public void Configure(EntityTypeBuilder<ActionRuleEntity> builder)
         {
-            builder.HasKey(e => new { e.RuleEntityID, e.ActionEntityID });
+            builder.HasKey(e => e.Id);
 
             builder.HasOne((parent) => parent.RuleEntity)
                 .WithMany((parent) => parent.actionRuleEntities)
@@ -16,6 +16,10 @@ namespace RuleBuilderInfra.Domain.Entities
             builder.HasOne((parent) => parent.ActionEntity)
                         .WithMany((parent) => parent.actionRuleEntities)
                         .HasForeignKey(foreign => foreign.ActionEntityID);
+
+            builder.HasMany((condtion) => condtion.actionRulePropertiesEntities)
+                .WithOne((ruleItem) => ruleItem.ActionRuleEntity)
+                .HasForeignKey((foreignKey) => foreignKey.ActionRuleEntityId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
