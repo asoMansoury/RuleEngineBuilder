@@ -74,6 +74,13 @@ namespace RuleBuilderInfra.WebAPI.Controllers
             var result = await _callingBusinessServiceMediator.InvokeAsync(ruleEntity.Id, ruleEntity.Value);
             return Ok(result);
         }
+
+        [HttpPost(nameof(ExecuteMethodByName))]
+        public async Task<IActionResult> ExecuteMethodByName([FromBody] FakeDataModelSample ruleEntity, CancellationToken cancellationToken)
+        {
+            var result = await _callingBusinessServiceMediator.InvokeAsync(1, "");
+            return Ok(result);
+        }
         #endregion
 
 

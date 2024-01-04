@@ -63,15 +63,4 @@ namespace RuleBuilderInfra.Domain.Entities
 
 
     }
-
-    public class RunningSavedRule
-    {
-        public int Id { get; set; }
-
-        public object? Value
-        { get; set; }
-
-
-
-    }
 }
