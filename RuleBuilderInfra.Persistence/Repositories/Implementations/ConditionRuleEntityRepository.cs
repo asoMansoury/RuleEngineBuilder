@@ -12,7 +12,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
 
         public async Task<ConditionRuleEntity> AddAsync(ConditionRuleEntity entity)
         {
-
+            entity.IsActive = true;
             _dbContext.Add(entity);
             return entity;
         }

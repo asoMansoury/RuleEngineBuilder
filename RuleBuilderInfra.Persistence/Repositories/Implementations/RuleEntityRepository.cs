@@ -21,13 +21,17 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
         public async Task<RuleEntity> AddAsync(RuleEntity entity)
         {
             entity.Id = 0;
+            entity.IsActive = true;
             _dbContext.Add(entity);
             return entity;
         }
 
         public async Task<List<RuleEntity>> GetAllAsync()
         {
-            var entities = _dbContext.ruleEntities.Include(item => item.ConditionRulesEntity).ToList();
+            var entities = _dbContext.RuleEntities
+                .Where(z => z.IsActive == true)
+                .Include(item => item.ConditionRulesEntity).ToList();
+
             entities.ForEach(item =>
             {
                 item.Conditions = item.ConditionRulesEntity.Select(item => new ConditionRuleEntity
@@ -47,7 +51,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
 
         public async Task<RuleEntity> GetRuleEntityByIdAsync(int id)
         {
-            var entity = _dbContext.ruleEntities
+            var entity = _dbContext.RuleEntities.Where(z => z.IsActive == true)
                         .Include(item => item.ConditionRulesEntity)
 
                         .Include(item => item.actionRuleEntities)

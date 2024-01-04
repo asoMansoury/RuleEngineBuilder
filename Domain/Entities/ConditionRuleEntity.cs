@@ -10,6 +10,8 @@ namespace RuleBuilderInfra.Domain.Entities
         public String Operator { get; set; }
         public String Value { get; set; }
 
+        public bool IsActive { get; set; }
+
         [JsonIgnore]
         public String? ConditionCode { get; set; }
 
@@ -19,5 +21,10 @@ namespace RuleBuilderInfra.Domain.Entities
 
         public Int64? RuleEntityId { get;set; }
         public RuleEntity? RuleEntity { get; set; }
+
+        [JsonIgnore]
+        public int? ConditionEntityId { get; set; }
+        [JsonIgnore]
+        public ConditionEntity? ConditionEntity { get; set; }
     }
 }

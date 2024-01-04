@@ -13,7 +13,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
         {
             try
             {
-               return Task.FromResult(_dbContext.conditionEntities.ToList());
+               return Task.FromResult(_dbContext.ConditionEntities.ToList());
             }
             catch (Exception ex)
             {
@@ -26,7 +26,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
         {
             try
             {
-                return Task.FromResult(_dbContext.conditionEntities.Where(z=>z.Code == code).ToList());
+                return Task.FromResult(_dbContext.ConditionEntities.Where(z=>z.Code == code).ToList());
             }
             catch (Exception ex)
             {

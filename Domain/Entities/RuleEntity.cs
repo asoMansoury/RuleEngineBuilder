@@ -18,7 +18,7 @@ namespace RuleBuilderInfra.Domain.Entities
 
         public String RuleName { get; set; }
 
-
+        public bool IsActive { get; set; }
         [NotMapped]
         public object? Value
         {

@@ -12,6 +12,10 @@ namespace RuleBuilderInfra.Domain.Entities
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
+            builder.HasMany((condtionRuleEntity) => condtionRuleEntity.ConditionRuleEntities)
+                    .WithOne((conditionEntity) => conditionEntity.ConditionEntity)
+                    .HasForeignKey((fk) => fk.ConditionEntityId);
+
         }
     }
 }

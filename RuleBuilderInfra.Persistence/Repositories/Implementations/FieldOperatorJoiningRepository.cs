@@ -14,7 +14,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
         {
             try
             {
-                return base._dbContext.fieldOperatorJoiningEntities.Where(z => z.FieldTypeCode == code)
+                return base._dbContext.FieldOperatorJoiningEntities.Where(z => z.FieldTypeCode == code)
                                                                    .Include(z=>z.OperatorTypesEntity)
                                                                    .ToList();
             }

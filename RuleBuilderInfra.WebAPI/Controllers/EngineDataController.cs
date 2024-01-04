@@ -32,20 +32,20 @@ namespace RuleBuilderInfra.WebAPI.Controllers
         }
 
         [HttpGet(nameof(GetAllFieldTypes))]
-        public async Task<IActionResult> GetAllFieldTypes()
+        public async Task<IActionResult> GetAllFieldTypes(CancellationToken cancellationToken)
         {
             var types = await _fieldTypesService.GetFieldTypes();
             return Ok(types);
         }
 
         [HttpGet(nameof(GetAllCondition))]
-        public async Task<IActionResult> GetAllCondition()
+        public async Task<IActionResult> GetAllCondition(CancellationToken cancellationToken)
         {
             return Ok(await this._conditionServices.GetConditionEntitiesAsync());
         }
 
         [HttpGet(nameof(GetOperators))]
-        public async Task<IActionResult> GetOperators([FromQuery]string fileType)
+        public async Task<IActionResult> GetOperators([FromQuery]string fileType, CancellationToken cancellationToken)
         {
             return Ok(await this._operatorTypesService.GetOperatorTypesAsync(fileType));
         }

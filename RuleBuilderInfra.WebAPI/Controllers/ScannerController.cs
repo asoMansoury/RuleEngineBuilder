@@ -37,7 +37,7 @@ namespace RuleBuilderInfra.WebAPI.Controllers
 
         #region Property Scanner
         [HttpGet(nameof(GetAllScannableEntities))]
-        public async Task<IActionResult> GetAllScannableEntities([FromQuery] string entityCategoryCode)
+        public async Task<IActionResult> GetAllScannableEntities([FromQuery] string entityCategoryCode, CancellationToken cancellationToken)
         {
             return Ok(_scanEntitiesEngineService.GetAllScannableEntities(entityCategoryCode));
         }
@@ -60,7 +60,7 @@ namespace RuleBuilderInfra.WebAPI.Controllers
 
         #region Query Builder Services
         [HttpPost(nameof(GenericDynamicQuery))]
-        public async Task<ActionResult> GenericDynamicQuery([FromBody] RuleEntity ruleCondition)
+        public async Task<ActionResult> GenericDynamicQuery([FromBody] RuleEntity ruleCondition, CancellationToken cancellationToken)
         {
             var data = await this._scanEntitiesEngineService.GenerateQueryBuilder(ruleCondition);
             return Ok((JsonConvert.SerializeObject(data)));
@@ -69,7 +69,7 @@ namespace RuleBuilderInfra.WebAPI.Controllers
 
 
         [HttpPost(nameof(ExecuteMethodByRuleEntityID))]
-        public async Task<IActionResult> ExecuteMethodByRuleEntityID([FromBody] RunningSavedRule ruleEntity)
+        public async Task<IActionResult> ExecuteMethodByRuleEntityID([FromBody] RunningSavedRule ruleEntity, CancellationToken cancellationToken)
         {
             var result = await _callingBusinessServiceMediator.InvokeAsync(ruleEntity.Id, ruleEntity.Value);
             return Ok(result);
@@ -100,7 +100,7 @@ namespace RuleBuilderInfra.WebAPI.Controllers
         #region Rules Service
 
         [HttpGet(nameof(GetRules))]
-        public async Task<IActionResult> GetRules()
+        public async Task<IActionResult> GetRules( CancellationToken cancellationToken)
         {
             var rules = await _ruleManagerService.GetAllRulesAsync();
             return Ok(rules);
@@ -108,7 +108,7 @@ namespace RuleBuilderInfra.WebAPI.Controllers
 
 
         [HttpPost(nameof(SaveRule))]
-        public async Task<IActionResult> SaveRule([FromBody] RuleEntity ruleEntity)
+        public async Task<IActionResult> SaveRule([FromBody] RuleEntity ruleEntity, CancellationToken cancellationToken)
         {
             await _ruleManagerService.AddNewRuleAsync(ruleEntity);
             return Ok();

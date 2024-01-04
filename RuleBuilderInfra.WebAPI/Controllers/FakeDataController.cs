@@ -16,13 +16,13 @@ namespace RuleBuilderInfra.WebAPI.Controllers
         }
 
         [HttpGet(nameof(GetMovies))]
-        public async Task<IActionResult> GetMovies()
+        public async Task<IActionResult> GetMovies(CancellationToken cancellationToken)
         {
             return Ok(await _fakeDataService.GetDistencteMovieAsync());
         }
 
         [HttpGet(nameof(GetProvinces))]
-        public async Task<IActionResult> GetProvinces()
+        public async Task<IActionResult> GetProvinces(CancellationToken cancellationToken)
         {
             return Ok(await _fakeDataService.GetDistencteProvincesAsync());
         }

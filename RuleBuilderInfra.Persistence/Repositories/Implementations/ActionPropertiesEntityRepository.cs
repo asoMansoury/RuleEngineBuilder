@@ -12,7 +12,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
         public async Task AddAsync(ActionPropertiesEntity actionPropertiesEntity, ActionEntity parentEntity)
         {
             actionPropertiesEntity.ActionEntity = parentEntity;
-            _dbContext.actionPropertisEntities.Add(actionPropertiesEntity);
+            _dbContext.ActionPropertisEntities.Add(actionPropertiesEntity);
         }
     }
     

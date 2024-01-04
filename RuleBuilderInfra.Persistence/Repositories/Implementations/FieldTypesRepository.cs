@@ -14,7 +14,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
             List<FieldTypesEntity>? entities = null;
             try
             {
-                entities = base._dbContext.fieldTypesEntities.ToList();
+                entities = base._dbContext.FieldTypesEntities.ToList();
             }
             catch (Exception ex)
             {
@@ -29,7 +29,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
             List<FieldTypesEntity>? entities = null;
             try
             {
-                entities = base._dbContext.fieldTypesEntities.Where(z=>fieldTypes.Contains(z.FieldType)).ToList();
+                entities = base._dbContext.FieldTypesEntities.Where(z=>fieldTypes.Contains(z.FieldType)).ToList();
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
             FieldTypesEntity? entity = null;
             try
             {
-                entity = base._dbContext.fieldTypesEntities.Single(z=> z.FieldType ==fieldType);
+                entity = base._dbContext.FieldTypesEntities.Single(z=> z.FieldType ==fieldType);
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
             FieldTypesEntity? entity = null;
             try
             {
-                entity = base._dbContext.fieldTypesEntities.SingleOrDefault(z => z.FieldTypeCode == code);
+                entity = base._dbContext.FieldTypesEntities.SingleOrDefault(z => z.FieldTypeCode == code);
             }
             catch (Exception ex)
             {

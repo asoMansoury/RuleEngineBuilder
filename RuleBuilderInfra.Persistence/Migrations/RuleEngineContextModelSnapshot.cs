@@ -47,7 +47,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("actionEntities");
+                    b.ToTable("ActionEntities");
                 });
 
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ActionPropertiesEntity", b =>
@@ -76,7 +76,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
                     b.HasIndex("ActionEntityID");
 
-                    b.ToTable("actionPropertisEntities");
+                    b.ToTable("ActionPropertisEntities");
                 });
 
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ActionRuleEntity", b =>
@@ -143,7 +143,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("conditionEntities");
+                    b.ToTable("ConditionEntities");
 
                     b.HasData(
                         new
@@ -171,6 +171,12 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     b.Property<string>("ConditionCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ConditionEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Operator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -190,6 +196,8 @@ namespace RuleBuilderInfra.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ConditionEntityId");
 
                     b.HasIndex("ParentId");
 
@@ -286,7 +294,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
                     b.HasIndex("FieldTypeCode");
 
-                    b.ToTable("fieldOperatorJoiningEntities");
+                    b.ToTable("FieldOperatorJoiningEntities");
 
                     b.HasData(
                         new
@@ -349,7 +357,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     b.HasIndex("FieldTypeCode")
                         .IsUnique();
 
-                    b.ToTable("fieldTypesEntities");
+                    b.ToTable("FieldTypesEntities");
 
                     b.HasData(
                         new
@@ -383,7 +391,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
                     b.HasKey("OperatorTypeCode");
 
-                    b.ToTable("operatorTypesEntities");
+                    b.ToTable("OperatorTypesEntities");
 
                     b.HasData(
                         new
@@ -448,6 +456,9 @@ namespace RuleBuilderInfra.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("RuleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -458,7 +469,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ruleEntities");
+                    b.ToTable("RuleEntities");
                 });
 
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ActionPropertiesEntity", b =>
@@ -512,6 +523,12 @@ namespace RuleBuilderInfra.Persistence.Migrations
 
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ConditionRuleEntity", b =>
                 {
+                    b.HasOne("RuleBuilderInfra.Domain.Entities.ConditionEntity", "ConditionEntity")
+                        .WithMany("ConditionRuleEntities")
+                        .HasForeignKey("ConditionEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RuleBuilderInfra.Domain.Entities.ConditionRuleEntity", "Parent")
                         .WithMany("Conditions")
                         .HasForeignKey("ParentId")
@@ -520,6 +537,8 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     b.HasOne("RuleBuilderInfra.Domain.Entities.RuleEntity", "RuleEntity")
                         .WithMany("ConditionRulesEntity")
                         .HasForeignKey("RuleEntityId");
+
+                    b.Navigation("ConditionEntity");
 
                     b.Navigation("Parent");
 
@@ -560,6 +579,11 @@ namespace RuleBuilderInfra.Persistence.Migrations
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ActionRuleEntity", b =>
                 {
                     b.Navigation("actionRulePropertiesEntities");
+                });
+
+            modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ConditionEntity", b =>
+                {
+                    b.Navigation("ConditionRuleEntities");
                 });
 
             modelBuilder.Entity("RuleBuilderInfra.Domain.Entities.ConditionRuleEntity", b =>

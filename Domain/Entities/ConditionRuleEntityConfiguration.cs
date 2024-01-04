@@ -20,6 +20,10 @@ namespace RuleBuilderInfra.Domain.Entities
                     .WithMany((ruleEntities) => ruleEntities.ConditionRulesEntity)
                     .HasForeignKey((ruleEntityItem) => ruleEntityItem.RuleEntityId);
 
+            builder.HasOne((conditionEntity) => conditionEntity.ConditionEntity)
+                        .WithMany((item) => item.ConditionRuleEntities)
+                        .HasForeignKey((item) => item.ConditionEntityId);
+
         }
     }
 }

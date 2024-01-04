@@ -12,15 +12,15 @@ namespace RuleBuilderInfra.Persistence
     public class RuleEngineContext : DbContext
     {
         public RuleEngineContext(DbContextOptions<RuleEngineContext> options) : base(options) { }
-        public DbSet<ConditionEntity> conditionEntities { get; set; }
-        public DbSet<FieldOperatorJoiningEntity> fieldOperatorJoiningEntities { get; set; }
-        public DbSet<FieldTypesEntity> fieldTypesEntities { get; set; }
-        public DbSet<OperatorTypesEntity> operatorTypesEntities { get; set; }
+        public DbSet<ConditionEntity> ConditionEntities { get; set; }
+        public DbSet<FieldOperatorJoiningEntity> FieldOperatorJoiningEntities { get; set; }
+        public DbSet<FieldTypesEntity> FieldTypesEntities { get; set; }
+        public DbSet<OperatorTypesEntity> OperatorTypesEntities { get; set; }
 
         public DbSet<ConditionRuleEntity> ConditionRuleEntities { get; set; }
-        public DbSet<RuleEntity> ruleEntities { get; set; }
-        public DbSet<ActionEntity> actionEntities { get; set; }
-        public DbSet<ActionPropertiesEntity> actionPropertisEntities { get; set; }
+        public DbSet<RuleEntity> RuleEntities { get; set; }
+        public DbSet<ActionEntity> ActionEntities { get; set; }
+        public DbSet<ActionPropertiesEntity> ActionPropertisEntities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
