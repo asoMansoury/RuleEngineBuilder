@@ -11,9 +11,15 @@ namespace RuleBuilderInfra.Application.PresentationModels.BuisinessEngineModels
         public int tax { get; set; }
     }
 
+    public class TaxCalculatorForFakeModelResponse
+    {
+        public decimal CineplexTax { get; set; }
+        public decimal DistributerTax { get; set; }
+    }
+
     public class TaxCalculatorClient : BusinessEngineModel
     {
-        public int RefundAmound { get; set; }
+        public int EarnedAmount { get; set; }
     }
 
     public class Taxtest : BusinessEngineModel

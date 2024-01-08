@@ -10,6 +10,7 @@ namespace RuleBuilderInfra.Domain.Entities
         public String Operator { get; set; }
         public String Value { get; set; }
 
+
         public bool IsActive { get; set; }
 
         [JsonIgnore]

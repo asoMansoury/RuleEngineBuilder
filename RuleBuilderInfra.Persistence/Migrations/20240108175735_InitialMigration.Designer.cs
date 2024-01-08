@@ -12,8 +12,8 @@ using RuleBuilderInfra.Persistence;
 namespace RuleBuilderInfra.Persistence.Migrations
 {
     [DbContext(typeof(RuleEngineContext))]
-    [Migration("20240104163531_ruleEngineInitialConfig")]
-    partial class ruleEngineInitialConfig
+    [Migration("20240108175735_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,7 +174,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     b.Property<string>("ConditionCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ConditionEntityId")
+                    b.Property<int?>("ConditionEntityId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -462,6 +462,10 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("QueryExpression")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("RuleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -471,6 +475,9 @@ namespace RuleBuilderInfra.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("QueryExpression")
+                        .IsUnique();
 
                     b.ToTable("RuleEntities");
                 });
@@ -528,9 +535,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 {
                     b.HasOne("RuleBuilderInfra.Domain.Entities.ConditionEntity", "ConditionEntity")
                         .WithMany("ConditionRuleEntities")
-                        .HasForeignKey("ConditionEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ConditionEntityId");
 
                     b.HasOne("RuleBuilderInfra.Domain.Entities.ConditionRuleEntity", "Parent")
                         .WithMany("Conditions")

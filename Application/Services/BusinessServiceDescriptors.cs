@@ -35,7 +35,7 @@ namespace RuleBuilderInfra.Application.Services
         //    businessEngine.InvokeAsync(outputSearchJson, inuptBusiness);
         //}
 
-        public void InvokeAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson, params object[] objects) 
+        public void InvokeAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson, params object[] objects)
         {
             object foundServiceInstance = _assemblyManagerService.GetSelectedServiceType(categoryService, serviceName);
             Type inputBusinessModel = _assemblyManagerService.GetInuptBusiness(categoryService, serviceName);
@@ -47,7 +47,7 @@ namespace RuleBuilderInfra.Application.Services
 
         }
 
-        public async Task<object> InvokeAsync(int ruleEntityId, params object[] objects) 
+        public async Task<object> InvokeAsync(Int64 ruleEntityId, params object[] objects)
         {
             object result = null;
             try
@@ -61,7 +61,7 @@ namespace RuleBuilderInfra.Application.Services
                     object instance = Activator.CreateInstance(inputBusinessModel1);
                     foreach (var actionPropertyItem in actionRuleItem.actionRulePropertiesEntities)
                     {
-                        var selectedProperty =  inputBusinessModel1.GetProperties().SingleOrDefault(item => item.Name == actionPropertyItem.ActionPropertyEntity.PropertyName);
+                        var selectedProperty = inputBusinessModel1.GetProperties().SingleOrDefault(item => item.Name == actionPropertyItem.ActionPropertyEntity.PropertyName);
 
                         string assemblyName = "mscorlib";
                         Assembly assembly = Assembly.Load(assemblyName);
@@ -71,13 +71,13 @@ namespace RuleBuilderInfra.Application.Services
 
                         inputBusinessModel1.GetProperty(actionPropertyItem.ActionPropertyEntity.PropertyName)!.SetValue(instance, value);
                     }
-                    
+
                     var businessEngine1 = Activator.CreateInstance(foundServiceInstance1.GetType());
 
                     MethodInfo performAsyncLogicMethod1 = foundServiceInstance1.GetType().GetMethod("PerformAsyncLogic", BindingFlags.NonPublic | BindingFlags.Instance);
 
                     var performAsyncLogicTas1k = (Task<object>)performAsyncLogicMethod1.Invoke(businessEngine1, new object[] { JsonConvert.SerializeObject(outputSearchJson), instance, objects });
-                    result =await performAsyncLogicTas1k;
+                    result = await performAsyncLogicTas1k;
                 }
                 return result;
 
@@ -101,7 +101,7 @@ namespace RuleBuilderInfra.Application.Services
             }
         }
 
-        public void InvokeFromDatabaseAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson) 
+        public void InvokeFromDatabaseAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson)
         {
 
 

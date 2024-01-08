@@ -11,6 +11,9 @@ namespace RuleBuilderInfra.Persistence.Repositories.Contracts
     {
         Task<RuleEntity> AddAsync(RuleEntity entity);
         Task<List<RuleEntity>> GetAllAsync();
-        Task<RuleEntity> GetRuleEntityByIdAsync(int id);
+        Task<RuleEntity> GetRuleEntityByIdAsync(Int64 id);
+        Task<RuleEntity> GetRuleEntityByQueryExpression(string queryExpression);
+        Task<RuleEntity> GetRuleEntityByComparingObject(List<ConditionRuleEntity> conditionRuleEntities);
+        Task<IQueryable<RuleEntity>> Where(Func<RuleEntity, bool> predicate);
     }
 }

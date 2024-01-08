@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -16,9 +17,11 @@ namespace RuleBuilderInfra.Domain.Entities
         public String EntityCode { get; set; }
         public String EntityCategoryCode { get; set; }
 
+
         public String RuleName { get; set; }
 
         public bool IsActive { get; set; }
+
         [NotMapped]
         public object? Value
         {
@@ -56,7 +59,9 @@ namespace RuleBuilderInfra.Domain.Entities
         [JsonIgnore]
         public List<ConditionRuleEntity>? ConditionRulesEntity { get; set; }
 
-
+        [JsonIgnore]
+        
+        public String? QueryExpression { get; set; }
 
         [JsonIgnore]
         public List<ActionRuleEntity>? actionRuleEntities { get; set; }

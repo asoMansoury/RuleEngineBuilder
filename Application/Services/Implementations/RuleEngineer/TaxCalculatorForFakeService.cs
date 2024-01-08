@@ -19,13 +19,14 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
         protected override Task<object> PerformAsyncLogic(string outputSearchJson, TaxCalculatorForFakeModel inuptBusiness, params object[] objects)
         {
             var outbputDesrilizedOnb = JsonConvert.DeserializeObject<List<FakeDataEntity>>(outputSearchJson);
-            var uiParams = JsonConvert.DeserializeObject<TaxCalculatorClient>(objects[0].ToString());
+            var uiParams = objects[0] as TaxCalculatorClient;
+            //var uiParams = JsonConvert.DeserializeObject<TaxCalculatorClient>(objects[0].ToString())
             TaxlCalcModelResponse response = new TaxlCalcModelResponse();
             decimal taxPercent = (decimal)inuptBusiness.tax / 100;
 
-            var distributerTax = uiParams.RefundAmound * taxPercent;
-            var cineplexTax = uiParams.RefundAmound - distributerTax;
-            var anynoymosResult = new { cineplexTax, distributerTax };
+            var distributerTax = uiParams.EarnedAmount * taxPercent;
+            var cineplexTax = uiParams.EarnedAmount - distributerTax;
+            var anynoymosResult = new TaxCalculatorForFakeModelResponse {CineplexTax =  cineplexTax,DistributerTax= distributerTax };
             return Task.FromResult<object>(anynoymosResult);
         }
     }

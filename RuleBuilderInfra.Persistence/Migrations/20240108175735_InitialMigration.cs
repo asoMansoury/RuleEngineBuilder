@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RuleBuilderInfra.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class ruleEngineInitialConfig : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -94,7 +94,8 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     RuleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CategoryService = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ServiceName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ServiceName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QueryExpression = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,7 +186,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
                     ConditionCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ParentId = table.Column<int>(type: "int", nullable: true),
                     RuleEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    ConditionEntityId = table.Column<int>(type: "int", nullable: false)
+                    ConditionEntityId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,8 +195,7 @@ namespace RuleBuilderInfra.Persistence.Migrations
                         name: "FK_ConditionRuleEntities_ConditionEntities_ConditionEntityId",
                         column: x => x.ConditionEntityId,
                         principalTable: "ConditionEntities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ConditionRuleEntities_ConditionRuleEntities_ParentId",
                         column: x => x.ParentId,
@@ -346,6 +346,12 @@ namespace RuleBuilderInfra.Persistence.Migrations
                 name: "IX_FieldTypesEntities_FieldTypeCode",
                 table: "FieldTypesEntities",
                 column: "FieldTypeCode",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RuleEntities_QueryExpression",
+                table: "RuleEntities",
+                column: "QueryExpression",
                 unique: true);
         }
 

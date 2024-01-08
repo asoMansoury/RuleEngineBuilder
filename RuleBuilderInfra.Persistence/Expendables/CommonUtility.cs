@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 using RuleBuilderInfra.Domain.ScanningEntities;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RuleBuilderInfra.Persistence
 {
@@ -16,6 +18,39 @@ namespace RuleBuilderInfra.Persistence
             Type? enumType = value.GetType();
             var name = Enum.GetName(enumType, value);
             return enumType.GetField(name).GetCustomAttributes(false).OfType<TAttribute>().SingleOrDefault();
+        }
+
+        public static string GeneratingQuery(Object obj)
+        {
+            StringBuilder result = new StringBuilder();
+            var properties = obj.GetType().GetProperties();
+            var totalRecords = properties.Length - 1;
+            int currentIndex = 0;
+
+            string conditionCode = "AND";
+            foreach (var item in properties)
+            {
+                var PropertyName = item.Name;
+                var PropertyValue = item.GetValue(obj).ToString();
+                var CondtionCode = currentIndex == totalRecords ? "" : $"{conditionCode} ";
+                var OperatorCode = "Eq";
+                string generatedQuery = $"{PropertyName} {OperatorCode} {PropertyValue} {CondtionCode}";
+                currentIndex++;
+                if (!string.IsNullOrEmpty(PropertyValue))
+                {
+                    if (result.Length == 0 || result.ToString().Trim().EndsWith(conditionCode))
+                        result.Append(generatedQuery);
+                    else
+                        result.Append(conditionCode + " " + generatedQuery);
+                }
+                else
+                {
+                    if (result.ToString().Trim().EndsWith(conditionCode))
+                        result.Remove(result.ToString().LastIndexOf(conditionCode), 3);
+                }
+
+            }
+            return result.ToString().Trim();
         }
 
 

@@ -12,6 +12,8 @@ namespace RuleBuilderInfra.Application.Services.Contracts
         Task AddNewRuleAsync(RuleEntity ruleEntity);
         Task<IEnumerable<RuleEntity>> GetAllRulesAsync();
         Task<List<RuleEntity>> GetAll();
-        Task<RuleEntity> GetRuleEntityByIdAsync(int id);
+        Task<RuleEntity> GetRuleEntityByIdAsync(Int64 id);
+        Task<RuleEntity> FindConditionRuleEntity(List<ConditionRuleEntity> entities);
+        Task<string> GetOrderedExpressiont(string queryExpression);
     }
 }

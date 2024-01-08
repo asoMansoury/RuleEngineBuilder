@@ -16,7 +16,7 @@ namespace RuleBuilderInfra.Application.Services
     public interface ICallingBusinessServiceMediator<TContext> where TContext: DbContext
     {
         void InvokeAsync(string categoryService, string serviceName, string outputSearchJson, string inputParamsJson, params object[] objects);
-        Task<object> InvokeAsync(int ruleEntityId, params object[] objects);
+        Task<object> InvokeAsync(Int64 ruleEntityId, params object[] objects);
     }
 }
 

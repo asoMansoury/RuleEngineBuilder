@@ -12,6 +12,12 @@ namespace RuleBuilderInfra.Domain.Entities
             builder.Property(x => x.Id)
                 .IsRequired();
 
+            builder.Property(z=>z.QueryExpression) .IsRequired();
+
+            // Add an index to enforce uniqueness
+            builder.HasIndex(e => e.QueryExpression)
+                   .IsUnique();
+
             builder.HasMany((condtion) => condtion.ConditionRulesEntity)
                     .WithOne((ruleItem) => ruleItem.RuleEntity)
                     .HasForeignKey((foreignKey) => foreignKey.RuleEntityId);
