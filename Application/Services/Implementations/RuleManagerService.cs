@@ -43,7 +43,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations
             this._conditionRepository = conditionRepository;
         }
 
-        public async Task AddNewRuleAsync(RuleEntity ruleEntity)
+        public async Task AddNewRuleAsync(RuleEntity ruleEntity, CancellationToken cancellationToken)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations
                 ruleEntity.ConditionRulesEntity = entity.Conditions;
                 SetCondtionEntityToRuleCondtions(entity.Conditions, condtions);
 
-                var generateUniqueQuery = GetOrderedExpressiont(GeneratingStringExpression(entity.Conditions)).Result;
+                var generateUniqueQuery = GetOrderedExpressiont(GeneratingStringExpression(entity.Conditions),cancellationToken).Result;
                 if (_ruleEntityRepository.Where(z => z.QueryExpression == generateUniqueQuery && z.IsActive == true).Result.Count() > 0)
                 {
                     throw new Exception("Duplicated condition");
@@ -125,26 +125,29 @@ namespace RuleBuilderInfra.Application.Services.Implementations
 
         }
 
-
-
-
-        public async Task<List<RuleEntity>> GetAll()
+        public async Task<List<RuleEntity>> GetAll( CancellationToken cancellationToken)
         {
             var ruleEntities = await _ruleEntityRepository.GetAllAsync();
             return ruleEntities;
         }
 
-        public async Task<IEnumerable<RuleEntity>> GetAllRulesAsync()
+        public async Task<IEnumerable<RuleEntity>> GetAllRulesAsync( CancellationToken cancellationToken)
         {
-            return await _ruleEntityRepository.GetAllAsync();
+            var rules = await _ruleEntityRepository.GetAllAsync(); ;
+            rules.AsParallel().ForAll((item) =>
+            {
+                item.RuleExpression = GeneratingStringExpression(item.Conditions.Where(z => z.Parent == null).ToList());
+                item.Conditions = null;
+            });
+            return rules;
         }
 
-        public async Task<RuleEntity> GetRuleEntityByIdAsync(Int64 id)
+        public async Task<RuleEntity> GetRuleEntityByIdAsync(Int64 id, CancellationToken cancellationToken)
         {
             return await _ruleEntityRepository.GetRuleEntityByIdAsync(id);
         }
 
-        public async Task<RuleEntity> FindConditionRuleEntity(List<ConditionRuleEntity> entities)
+        public async Task<RuleEntity> FindConditionRuleEntity(List<ConditionRuleEntity> entities, CancellationToken cancellationToken)
         {
             ConditionRuleEntity resultEntity = new ConditionRuleEntity();
             int totalRecords = entities.Count;
@@ -202,7 +205,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations
             throw new ArgumentException();
         }
 
-        public async Task<string> GetOrderedExpressiont(string queryExpression)
+        public async Task<string> GetOrderedExpressiont(string queryExpression, CancellationToken cancellationToken)
         {
             StringBuilder queryBuilder = new StringBuilder();
             queryExpression.ToCharArray().Order().ToList().ForEach(t =>
@@ -212,8 +215,21 @@ namespace RuleBuilderInfra.Application.Services.Implementations
             });
             return queryBuilder.ToString().Trim();
         }
+
+        public async Task<bool> DeleteRule(Int64 ruleEntityID, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var entity = (await _ruleEntityRepository.Where(z => z.Id == ruleEntityID && z.IsActive == true)).Single();
+                _ruleEntityRepository.DeleteRule(entity);
+                _unitOfWork.CommitToDatabase();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return true;
+        }
     }
-
-
-
 }

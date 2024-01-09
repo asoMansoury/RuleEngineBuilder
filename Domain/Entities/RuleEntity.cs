@@ -63,6 +63,9 @@ namespace RuleBuilderInfra.Domain.Entities
         
         public String? QueryExpression { get; set; }
 
+        [NotMapped]
+        public String? RuleExpression { get; set; }
+
         [JsonIgnore]
         public List<ActionRuleEntity>? actionRuleEntities { get; set; }
 

@@ -60,15 +60,15 @@ namespace RuleBuilderInfra.Application.Services.Implementations
         {
             try
             {
-                var generatedQuery =await _ruleManagerService.GetOrderedExpressiont(CommonUtility.GeneratingQuery(sampleData.RuleEntity));
+                var generatedQuery =await _ruleManagerService.GetOrderedExpressiont(CommonUtility.GeneratingQuery(sampleData.RuleEntity), cancellationToken);
                 var ruleEntity = await _ruleEntityRepository.GetRuleEntityByQueryExpression(generatedQuery);
                 if (ruleEntity == null)
                     throw new Exception("Not found any rule for provided data");
                 var convertedObject = ConvertObjectToConditionRuleEntity(sampleData.RuleEntity);
-                var foundCondition = _ruleManagerService.FindConditionRuleEntity(convertedObject);
+                var foundCondition = _ruleManagerService.FindConditionRuleEntity(convertedObject, cancellationToken);
 
                 var clientParams = new TaxCalculatorClient { EarnedAmount = sampleData.EarnedAmount };
-                var result = _callingBusinessServiceMediator.InvokeAsync(ruleEntity.Id, clientParams).Result as TaxCalculatorForFakeModelResponse;
+                var result = _callingBusinessServiceMediator.InvokeAsync(ruleEntity.Id, cancellationToken, clientParams).Result as TaxCalculatorForFakeModelResponse;
                 return result;
 
             }

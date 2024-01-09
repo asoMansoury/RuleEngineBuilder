@@ -11,9 +11,9 @@ namespace RuleBuilderInfra.Application.Services.Contracts.RuleEngineer
 {
     public interface IScanEntitiesEngineService<TContext> where TContext : DbContext
     {
-        List<ScannableEntities> GetAllScannableEntities(string assemblyName);
-        Task<List<RuleEngineProperties>> GetPropertyPairs(string assemblyName,string entityTypeCode);
-        Task<RuleEngineProperties> GetTypeOfPropertyName(string assemblyName, string entityTypeCode,string propertyName);
-        Task<object> GenerateQueryBuilder(RuleEntity ruleEntity);
+        List<ScannableEntities> GetAllScannableEntities(string assemblyName, CancellationToken cancellationToken);
+        Task<List<RuleEngineProperties>> GetPropertyPairs(string assemblyName,string entityTypeCode, CancellationToken cancellationToken);
+        Task<RuleEngineProperties> GetTypeOfPropertyName(string assemblyName, string entityTypeCode,string propertyName, CancellationToken cancellationToken);
+        Task<object> GenerateQueryBuilder(RuleEntity ruleEntity, CancellationToken cancellationToken);
     }
 }

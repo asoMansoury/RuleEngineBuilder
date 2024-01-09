@@ -51,7 +51,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
             return assm.GetTypes().Where(z => z.GetCustomAttributes(typeof(ScanningAttribute)).Any(e => e.GetType() == typeof(ScanningAttribute))).ToList();
         }
 
-        public List<ScannableEntities> GetAllScannableEntities(string assemblyName)
+        public List<ScannableEntities> GetAllScannableEntities(string assemblyName, CancellationToken cancellationToken)
         {
             var result = new List<ScannableEntities>();
 
@@ -72,7 +72,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
             return result;
         }
 
-        public async Task<List<RuleEngineProperties>> GetPropertyPairs(string assemblyName, string entityTypeCode)
+        public async Task<List<RuleEngineProperties>> GetPropertyPairs(string assemblyName, string entityTypeCode, CancellationToken cancellationToken)
         {
             var result = new List<RuleEngineProperties>();
 
@@ -95,7 +95,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
             return result;
         }
 
-        public async Task<RuleEngineProperties> GetTypeOfPropertyName(string assemblyName, string entityTypeCode, string propertyName)
+        public async Task<RuleEngineProperties> GetTypeOfPropertyName(string assemblyName, string entityTypeCode, string propertyName, CancellationToken cancellationToken)
         {
             var propertyType = checkEntityScannedInstantiator(assemblyName, entityTypeCode).GetTypeOfPropertyName(propertyName);
             FieldTypesEntity fieldTypesCodes = await _fieldTypesService.GetFieldTypesByFieldType(propertyType);
@@ -105,7 +105,7 @@ namespace RuleBuilderInfra.Application.Services.Implementations.RuleEngineer
             return result;
         }
 
-        public async Task<object> GenerateQueryBuilder(RuleEntity ruleEntity)
+        public async Task<object> GenerateQueryBuilder(RuleEntity ruleEntity, CancellationToken cancellationToken)
         {
             var queryBuilder = ruleQueryBuilderInstantiator(ruleEntity.EntityCategoryCode, ruleEntity.EntityCode);
             var generatedQuery = queryBuilder.GenerateQueryBuilder(ruleEntity);

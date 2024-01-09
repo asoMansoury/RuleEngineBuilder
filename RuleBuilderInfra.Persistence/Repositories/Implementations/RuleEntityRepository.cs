@@ -96,6 +96,12 @@ namespace RuleBuilderInfra.Persistence.Repositories.Implementations
             var entities = _dbContext.RuleEntities.Where(predicate).AsQueryable();
             return entities;
         }
+
+        public async Task<RuleEntity> DeleteRule(RuleEntity entity)
+        {
+            entity.IsActive= false;
+            return entity;
+        }
     }
 }
 

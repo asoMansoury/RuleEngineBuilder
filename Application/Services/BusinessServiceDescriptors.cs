@@ -47,13 +47,13 @@ namespace RuleBuilderInfra.Application.Services
 
         }
 
-        public async Task<object> InvokeAsync(Int64 ruleEntityId, params object[] objects)
+        public async Task<object> InvokeAsync(Int64 ruleEntityId, CancellationToken cancellationToken, params object[] objects)
         {
             object result = null;
             try
             {
-                var ruleEntity = await _ruleManagerService.GetRuleEntityByIdAsync(ruleEntityId);
-                var outputSearchJson = await this._scanEntitiesEngineService.GenerateQueryBuilder(ruleEntity);
+                var ruleEntity = await _ruleManagerService.GetRuleEntityByIdAsync(ruleEntityId, cancellationToken);
+                var outputSearchJson = await this._scanEntitiesEngineService.GenerateQueryBuilder(ruleEntity,cancellationToken);
                 foreach (var actionRuleItem in ruleEntity.actionRuleEntities!)
                 {
                     object foundServiceInstance1 = _assemblyManagerService.GetSelectedServiceType(actionRuleItem.ActionEntity.CategoryService, actionRuleItem.ActionEntity.ServiceName);
